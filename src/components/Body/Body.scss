@@ -1,0 +1,15 @@
+.CalendarBody {
+    &__Body {
+
+        background-color: hotpink;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+
+        &-weekDays {
+            padding: 20px;
+        }
+
+    }
+
+
+}
