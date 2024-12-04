@@ -4,8 +4,8 @@ import {
     cnCalendarHeader
 } from "./Header.index"
 
-export const Header: React.FC<HeaderProps> = ({ day }) => {
+export const Header: React.FC<HeaderProps> = ({ month, year }) => {
     return <div className={cnCalendarHeader("")}>
-        <h1>{day}</h1>
+        <h1>{month}, {year}</h1>
     </div>;
 };

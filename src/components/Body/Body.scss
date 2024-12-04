@@ -1,11 +1,28 @@
 .CalendarBody {
     &__Body {
 
-        background-color: hotpink;
+
         display: grid;
         grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
 
-        &-weekDays {
+        &-weekdays {
+            background-color: rgb(105, 255, 113);
+            padding: 20px;
+        }
+
+        &-weekends {
+            background-color: rgb(175, 105, 255);
+            padding: 20px;
+        }
+
+        &-days:not(.CalendarBody__Body-weekend) {
+            background-color: rgb(240, 255, 105);
+            padding: 20px;
+        }
+
+        &-weekend {
+            background-color: rgb(105, 255, 230);
             padding: 20px;
         }
 
