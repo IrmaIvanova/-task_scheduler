@@ -1,2 +1,0 @@
-.CalendarBody__Body{grid-gap:10px;display:grid;gap:10px;grid-template-columns:repeat(7,1fr)}.CalendarBody__Body-weekdays{background-color:#69ff71;padding:20px}.CalendarBody__Body-weekends{background-color:#af69ff;padding:20px}.CalendarBody__Body-days:not(.CalendarBody__Body-weekend){background-color:#f0ff69;padding:20px}.CalendarBody__Body-weekend{background-color:#69ffe6;padding:20px}
-/*# sourceMappingURL=main.884dd3c2.css.map*/
