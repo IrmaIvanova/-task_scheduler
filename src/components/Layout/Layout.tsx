@@ -4,12 +4,12 @@ import { weekdaysArray, monthArray } from '../../constants'
 import { Body } from '../Body/Body'
 import { LayoutProps, cnLayoutBody } from './Layout.index'
 
-export const Layout: React.FC<LayoutProps> = ({ }) => {
+export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
     const selectYear = today.getFullYear()
     let selectMonth = today.getMonth();
 
-    return <div>
+    return <div className={cnLayoutBody('')}>
         <Header month={monthArray[selectMonth]} year={selectYear} />
         <Body selectMonth={selectMonth} selectYear={selectYear} weekdays={weekdaysArray} />
     </div>

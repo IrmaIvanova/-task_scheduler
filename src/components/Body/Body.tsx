@@ -12,7 +12,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear })
             const day = i - firstDay + 1;
             const weekDay = new Date(selectYear, selectMonth, day).getDay();
 
-            return <div className={cnCalendarBody(i >= firstDay && i < monthDaysCount + firstDay ? `Body-days ${weekDay == 0 || weekDay == 6 ? "CalendarBody__Body-weekend" : ""}` : "Body-outOfMonth",)}>
+            return <div className={cnCalendarBody(i >= firstDay && i < monthDaysCount + firstDay ? `Body-days ${weekDay === 0 || weekDay === 6 ? "CalendarBody__Body-weekend" : ""}` : "Body-outOfMonth",)}>
                 {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
             </div>
         }
