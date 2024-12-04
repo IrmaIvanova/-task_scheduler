@@ -1,0 +1,62 @@
+.LayoutBody {
+
+
+    &__NightTheme {
+        background-color: rgb(59, 3, 82);
+        padding: 25px;
+        height: 100vh;
+    }
+
+    &__DayTheme {
+        background-color: rgb(246, 252, 170);
+        padding: 25px;
+        height: 100vh;
+    }
+
+    &__switch-btn {
+        display: inline-block;
+        width: 72px;
+        /* ширина */
+        height: 38px;
+        /* высота */
+        border-radius: 19px;
+        /* радиус скругления */
+        background: linear-gradient(to right, #ffd240 0, #fffd69 40%, #893ed0 60%, #4a118c 100%);
+        background-size: 180px 100%;
+        z-index: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        transition-duration: 300ms;
+        /* анимация */
+    }
+
+    &__switch-btn::after {
+        content: "";
+        height: 32px;
+        /* высота кнопки */
+        width: 32px;
+        /* ширина кнопки */
+        border-radius: 17px;
+        background: #fff;
+        /* цвет кнопки */
+        top: 3px;
+        /* положение кнопки по вертикали относительно основы */
+        left: 3px;
+        /* положение кнопки по горизонтали относительно основы */
+        transition-duration: 300ms;
+        /* анимация */
+        position: absolute;
+        z-index: 1;
+    }
+
+    &__switch-on {
+        background-position-x: -100px;
+    }
+
+    &__switch-on::after {
+        left: 37px;
+    }
+}
