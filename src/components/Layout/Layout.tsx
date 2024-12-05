@@ -4,6 +4,7 @@ import { weekdaysArray, monthArray } from '../../constants'
 import { Body } from '../Body/Body'
 import { LayoutProps, cnLayoutBody } from './Layout.index'
 import "./Layout.scss"
+import { Button } from '../../elements/Button/Button'
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
 
@@ -32,22 +33,24 @@ export const Layout: React.FC<LayoutProps> = () => {
     }
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
+        <div className={cnLayoutBody("ButtonBox")} >
+            <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
 
-        <button onClick={() => monthChangeButton(false)}> назад </button>
-        <button onClick={() => monthChangeButton(true)}> вперёд </button>
+                <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
+                <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
+            </div>
+            <button
+                className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
+                onClick={() => setDarkTheme(!darkTheme)}
+            >
 
-        <div
-            className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
-            onClick={() => setDarkTheme(!darkTheme)}
-        >
-
+            </button>
         </div>
-
         <Header
             darkTheme={darkTheme}
             month={monthArray[selectMonth]}
             year={selectYear} />
-            
+
         <Body
             darkTheme={darkTheme}
             today={today.getDate()}

@@ -1,0 +1,71 @@
+.Button {
+    &__DayBTN {
+
+        background: #ffd240;
+        color: #fff;
+        padding: 10px 20px;
+        border: 0;
+        position: relative;
+        line-height: 16px;
+        font-size: 16px;
+
+        &.right::before {
+            content: '';
+            display: block;
+            border-left: 25px solid #ffd240;
+            border-top: 20px solid transparent;
+            border-bottom: 18px solid transparent;
+            border-right: 0;
+            position: absolute;
+            right: -25px;
+            top: 0
+        }
+
+        &.left::before {
+            content: '';
+            display: block;
+            border-right: 25px solid #ffd240;
+            border-top: 20px solid transparent;
+            border-bottom: 18px solid transparent;
+            position: absolute;
+            right: 83px;
+            top: 0
+        }
+    }
+
+
+
+    &__NightBTN {
+        background: #893ed0;
+        color: #fff;
+        padding: 10px 20px;
+        border: 0;
+        position: relative;
+        line-height: 16px;
+        font-size: 16px;
+
+        &.right::before {
+            content: '';
+            display: block;
+            border-left: 25px solid #893ed0;
+            border-top: 20px solid transparent;
+            border-bottom: 18px solid transparent;
+            border-right: 0;
+            position: absolute;
+            right: -25px;
+            top: 0
+        }
+
+        &.left::before {
+            content: '';
+            display: block;
+            border-right: 25px solid #893ed0;
+            border-top: 20px solid transparent;
+            border-bottom: 18px solid transparent;
+            position: absolute;
+            right: 83px;
+            top: 0
+        }
+    }
+
+}
