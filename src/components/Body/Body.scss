@@ -45,15 +45,19 @@
         gap: 10px;
 
         &-weekdays {
-            background-color: rgb(199, 86, 209);
+            // background-color: rgb(199, 86, 209);
+            background-color: rgb(61, 50, 165);
             padding: 20px;
             border-radius: 50px;
+            color: #fff;
         }
 
         &-weekends {
-            background-color: rgb(175, 105, 255);
+            background-color: rgb(101, 28, 116);
+       
             padding: 20px;
             border-radius: 50px;
+            color: #fff;
         }
 
         &-days:not(.CalendarBody__BodyDark-weekend, .CalendarBody__BodyDark-today)
@@ -61,18 +65,21 @@
             background-color: rgb(64, 134, 214);
             padding: 20px;
             border-radius: 50px;
+            color: #fff;
         }
 
         &-weekend {
-            background-color: rgb(41, 28, 116);
+            background-color: rgb(175, 105, 255);
             padding: 20px;
             border-radius: 50px;
+            color: #fff;
         }
 
         &-today {
-            background-color: rgba(21, 129, 133, 0.404);
+            background-color: rgba(39, 93, 196, 0.863);
             padding: 20px;
             border-radius: 50px;
+            color: #fff;
         }
 
     }
