@@ -45,7 +45,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
             const checkToday = day === today && selectYear === actualYear && selectMonth === actualMonth
             return <div
                 onClick={() => {
-                    toggleShowDayPlan(new Date(selectYear, selectMonth, i - firstDay + 2));
+                    toggleShowDayPlan(new Date(selectYear, selectMonth, i - firstDay + 1));
                     toggleOpen(true);
                 }}
                 className={cnCalendarBody(i >= firstDay && i < monthDaysCount + firstDay ?
