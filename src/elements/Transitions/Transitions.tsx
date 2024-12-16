@@ -1,0 +1,1 @@
+export { TransitionGroup } from 'react-transition-group';

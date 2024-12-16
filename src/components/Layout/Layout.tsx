@@ -5,14 +5,19 @@ import { Body } from '../Body/Body'
 import { LayoutProps, cnLayoutBody } from './Layout.index'
 import "./Layout.scss"
 import { Button } from '../../elements/Button/Button'
+import { useAppContext } from '../../context/AppContext/AppContextProvider'
+
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
 
     const [selectMonth, setSelectMonth] = React.useState(today.getMonth())
     const [selectYear, setSelectYear] = React.useState(today.getFullYear())
-    const [darkTheme, setDarkTheme] = React.useState(false)
+    // const [darkTheme, setDarkTheme] = React.useState(false)
 
-    console.log("selectMonth", selectMonth)
+
+
+    const { darkTheme, toggleTheme, open } = useAppContext();
+
 
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
@@ -33,31 +38,37 @@ export const Layout: React.FC<LayoutProps> = () => {
     }
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
-        <div className={cnLayoutBody("ButtonBox")} >
-            <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
 
-                <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
-                <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
+        <div style={{ width: open ? "80%" : "100%" }}>
+            <div className={cnLayoutBody("ButtonBox")} >
+                <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
+
+                    <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
+                    <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
+                </div>
+                <button
+                    className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
+                    onClick={() => toggleTheme()}
+                >
+
+                </button>
             </div>
-            <button
-                className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
-                onClick={() => setDarkTheme(!darkTheme)}
-            >
+            <Header
+                darkTheme={darkTheme}
+                month={monthArray[selectMonth]}
+                year={selectYear} />
 
-            </button>
+            <Body
+                darkTheme={darkTheme}
+                today={today.getDate()}
+                actualYear={actualYear}
+                actualMonth={actualMonth}
+                selectMonth={selectMonth}
+                selectYear={selectYear}
+                weekdays={weekdaysArray} />
         </div>
-        <Header
-            darkTheme={darkTheme}
-            month={monthArray[selectMonth]}
-            year={selectYear} />
 
-        <Body
-            darkTheme={darkTheme}
-            today={today.getDate()}
-            actualYear={actualYear}
-            actualMonth={actualMonth}
-            selectMonth={selectMonth}
-            selectYear={selectYear}
-            weekdays={weekdaysArray} />
+        <div id="DayScheduleBox"></div>
     </div>
+
 }
