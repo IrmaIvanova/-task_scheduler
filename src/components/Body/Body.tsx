@@ -5,6 +5,7 @@ import "./Body.scss"
 import { DaySchedule } from "./DaySchedule/DaySchedule"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 
+
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today }) => {
 
     const firstDay = new Date(selectYear, selectMonth, 0).getDay()
@@ -27,7 +28,6 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
     } = useAppContext();
 
 
-    console.log("showDayPlan", showDayPlan)
     const DayScheduleRender = React.useMemo(() => {
         if (!rendered) return null
         const root = document.getElementById('DayScheduleBox');

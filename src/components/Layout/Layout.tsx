@@ -39,6 +39,7 @@ export const Layout: React.FC<LayoutProps> = () => {
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
 
+
         <div style={{ width: open ? "80%" : "100%" }}>
             <div className={cnLayoutBody("ButtonBox")} >
                 <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
@@ -68,7 +69,7 @@ export const Layout: React.FC<LayoutProps> = () => {
                 weekdays={weekdaysArray} />
         </div>
 
-        <div id="DayScheduleBox"></div>
+        <div id="DayScheduleBox" style={{ width: open ? "20%" : "0" }}></div>
     </div>
 
 }

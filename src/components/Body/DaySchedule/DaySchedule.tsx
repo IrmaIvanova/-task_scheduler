@@ -3,50 +3,38 @@ import { DayScheduleProps, cnDaySchedule } from './DaySchedule.index'
 import { TransitionGroup } from '../../../elements/Transitions/Transitions'
 import { useAppContext } from '../../../context/AppContext/AppContextProvider'
 import { weekdaysArrayAmerican } from '../../../constants'
+import Slide from '@mui/material/Slide';
+import './DaySchedule.scss'
+
+
 export const DaySchedule: React.FC<DayScheduleProps> = () => {
 
     const {
         showDayPlan,
         toggleShowDayPlan,
         toggleOpen,
-        open
+        open,
+        darkTheme
     } = useAppContext();
 
-    return <TransitionGroup
-    // component={<div 
-    //     style={{
-    //     display: 'flex',
-    //     position: 'fixed',
-    //     right: 0,
-    //     height: "100vh",
-    //     maxWidth: '100%',
-    //     // backgroundColor: '#194776',
-    //     zIndex: 90,
-    //     transition: `max-width 0.25s ease-in-out`,
-    //     backgroundColor: '#FFFFFF',
-    // }}
-    // >
-    //     кукареку
-    // </div>}
-    // className={cnDaySchedule("")}
-    // className={cnDaySchedule({ stayOpened, hide, opened }, [className])}
-    // sx={{
-    //     maxWidth: opened ? 300 : !opened ? 93 : undefined,
-    //     overflowX: 'auto'
-    // }}
-    // onClick={() => {
-    //     if (opened) {
-    //         return
-    //     }
-    //     else {
-    //         setOpened(true)
-    //     }
-    // }}
-    >
-        {open && <div>
-            {weekdaysArrayAmerican[showDayPlan.getDay()]}, {showDayPlan.getDate()}
-        </div>}
-        <div onClick={() => { toggleOpen(false) }}>x</div>
+    const theme = darkTheme ? "NightTheme" : "DayTheme";
+
+
+    return <TransitionGroup>
+        <Slide direction="left" in={open} mountOnEnter unmountOnExit>
+           {open &&  <div className={cnDaySchedule(`${theme}`)}>
+
+
+
+
+                <div className={cnDaySchedule(`${theme}-Title`)}>
+                    <div>
+                        {weekdaysArrayAmerican[showDayPlan.getDay()]}, {showDayPlan.getDate()}
+                    </div>
+                    <div onClick={() => { toggleOpen(false) }}>x</div>
+                </div>
+            </div>}
+        </Slide>
     </TransitionGroup>
 
 

@@ -1,0 +1,28 @@
+
+
+.DaySchedule__DayTheme {
+    background: #a5f19cba;
+    height: 100vh;
+    border-radius: 25px;
+    margin: 0 10px;
+    padding: 10px 20px;
+    // transition: transform 225ms cubic-bezier(0, 0, 0.2, 1);
+    &-Title{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.DaySchedule__NightTheme {
+    background: rgb(3, 42, 77);
+    color: #fff;
+    height: 100vh;
+    border-radius: 25px;
+    margin: 0 10px;
+    padding: 10px 20px;
+    // transition: transform 225ms cubic-bezier(0, 0, 0.2, 1);
+    &-Title{
+        display: flex;   
+        justify-content: space-between;
+    }
+}
