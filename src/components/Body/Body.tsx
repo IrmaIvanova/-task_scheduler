@@ -38,7 +38,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
     }, [rendered]);
 
     return <div className={cnCalendarBody(`${theme}`)}>
-        {weekdays.map((el: string, index: number) => <div className={cnCalendarBody(`${index > 4 ? `${theme}-weekends` : `${theme}-weekdays`}`,)}>{el}</div>)}
+        {weekdays.map((el: string, index: number) => <div className={cnCalendarBody(`${index > 4 ? `${theme}-weekends` : `${theme}-weekdays`} CalendarBody__${theme}Box`,)}>{el}</div>)}
         {[...Array(42)].map((_, i) => {
             const day = i - firstDay + 1;
             const weekDay = new Date(selectYear, selectMonth, day).getDay();
@@ -49,8 +49,8 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
                     toggleOpen(true);
                 }}
                 className={cnCalendarBody(i >= firstDay && i < monthDaysCount + firstDay ?
-                    `${theme}-days ${weekDay === 0 || weekDay === 6 ?
-                        `CalendarBody__${theme}-weekend` : ""} ${checkToday ? `CalendarBody__${theme}-today` : ""}` : `${theme}-outOfMonth`,)}>
+                    `${theme}-days  CalendarBody__${theme}Box ${weekDay === 0 || weekDay === 6 ?
+                        `CalendarBody__${theme}-weekend CalendarBody__${theme}Box` : ""} ${checkToday ? `CalendarBody__${theme}-today CalendarBody__${theme}Box` : ""}` : `${theme}-outOfMonth`)}>
                 {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
             </div>
         }
