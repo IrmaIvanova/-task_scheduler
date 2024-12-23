@@ -14,8 +14,6 @@ export const Layout: React.FC<LayoutProps> = () => {
     const [selectYear, setSelectYear] = React.useState(today.getFullYear())
     // const [darkTheme, setDarkTheme] = React.useState(false)
 
-console.log("selectYear",selectYear)
-console.log("selectMonth",selectMonth)
 
     const { darkTheme, toggleTheme, open } = useAppContext();
 
