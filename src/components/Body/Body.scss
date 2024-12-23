@@ -16,8 +16,24 @@
         cursor:pointer
     }
     &__BodyBox:not(.CalendarBody__Body-weekends, .CalendarBody__Body-weekdays ):hover {
-        background-color: rgb(172, 247, 172)!important;
+        background-color: rgba(216, 243, 216, 0.438)!important;
         cursor: pointer
+    }
+    
+    &__BodyBox:not(.CalendarBody__Body-weekends, .CalendarBody__Body-weekdays ):hover {
+        background-color: rgba(216, 243, 216, 0.438)!important;
+        cursor: pointer
+    }
+    &__BodyDark-OpenDay {
+        color: #fed50f;
+        font-weight: 700;
+        box-shadow: 0px 3px 3px -2px rgb(255 255 255 / 76%), 0px 3px 4px 0px rgb(255 255 255), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    }
+    &__Body-OpenDay {
+        color: #0a0a07;
+        font-weight: 700;
+        box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    
     }
 
     &__Body {

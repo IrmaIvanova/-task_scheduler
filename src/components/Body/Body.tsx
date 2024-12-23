@@ -28,6 +28,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
     } = useAppContext();
 
 
+
     const DayScheduleRender = React.useMemo(() => {
         if (!rendered) return null
         const root = document.getElementById('DayScheduleBox');
@@ -42,16 +43,25 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         {[...Array(42)].map((_, i) => {
             const day = i - firstDay + 1;
             const weekDay = new Date(selectYear, selectMonth, day).getDay();
+
             const checkToday = day === today && selectYear === actualYear && selectMonth === actualMonth
-            return <div
+            const checkOpenDay = showDayPlan.getDate() === day && selectYear === showDayPlan.getFullYear() && selectMonth === showDayPlan.getMonth()
+
+            return  <div
                 onClick={() => {
                     toggleShowDayPlan(new Date(selectYear, selectMonth, i - firstDay + 1));
                     toggleOpen(true);
                 }}
                 className={cnCalendarBody(i >= firstDay && i < monthDaysCount + firstDay ?
-                    `${theme}-days  CalendarBody__${theme}Box ${weekDay === 0 || weekDay === 6 ?
-                        `CalendarBody__${theme}-weekend CalendarBody__${theme}Box` : ""} ${checkToday ? `CalendarBody__${theme}-today CalendarBody__${theme}Box` : ""}` : `${theme}-outOfMonth`)}>
-                {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
+                    `${theme}-days
+                     CalendarBody__${theme}${checkOpenDay&&open ? "-OpenDay" : "-closedDay"} 
+                     CalendarBody__${theme}Box ${weekDay === 0 || weekDay === 6 ?
+                        `CalendarBody__${theme}-weekend CalendarBody__${theme}Box` : ""} 
+                        ${checkToday ? `CalendarBody__${theme}-today CalendarBody__${theme}Box` : ""}` : `${theme}-outOfMonth`
+                        )}>
+               {/* <div className={cnCalendarBody(`${theme}${checkOpenDay&&open ? "-OpenDay" : "-closedDay"}`)}> */}
+                    {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
+                {/* </div> */}
             </div>
         }
         )}
