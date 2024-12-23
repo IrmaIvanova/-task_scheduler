@@ -9,30 +9,22 @@ import { useAppContext } from '../../context/AppContext/AppContextProvider'
 
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
-
-    const [selectMonth, setSelectMonth] = React.useState(today.getMonth())
-    const [selectYear, setSelectYear] = React.useState(today.getFullYear())
-    // const [darkTheme, setDarkTheme] = React.useState(false)
-
-
-    const { darkTheme, toggleTheme, open } = useAppContext();
-
+    const { darkTheme, toggleTheme, open, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
 
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
 
     const monthChangeButton = (forward: boolean) => {
         if (forward) {
-            setSelectMonth((selectMonth + 1) === monthArray.length ? 0 : selectMonth + 1)
-            if ((selectMonth + 1) === monthArray.length) {
-                setSelectYear(selectYear + 1)
-            }
+            toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() + 1, showDayPlan.getDate()))
+            toggleOpen(false)
+
         } else {
-            setSelectMonth(selectMonth - 1 === -1 ? 11 : selectMonth - 1)
-            if ((selectMonth + 1) === -1 || selectMonth === 0) {
-                setSelectYear(selectYear - 1)
-            }
+            toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() - 1, showDayPlan.getDate()))
+            toggleOpen(false)
+
         }
+  
 
     }
 
@@ -55,16 +47,16 @@ export const Layout: React.FC<LayoutProps> = () => {
             </div>
             <Header
                 darkTheme={darkTheme}
-                month={monthArray[selectMonth]}
-                year={selectYear} />
+                month={monthArray[showDayPlan.getMonth()]}
+                year={showDayPlan.getFullYear()} />
 
             <Body
                 darkTheme={darkTheme}
                 today={today.getDate()}
                 actualYear={actualYear}
                 actualMonth={actualMonth}
-                selectMonth={selectMonth}
-                selectYear={selectYear}
+                selectMonth={showDayPlan.getMonth()}
+                selectYear={showDayPlan.getFullYear()}
                 weekdays={weekdaysArray} />
         </div>
 
