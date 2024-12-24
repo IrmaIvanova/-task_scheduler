@@ -2,7 +2,7 @@ import * as React from "react"
 import { DayScheduleProps, cnDaySchedule } from './DaySchedule.index'
 import { TransitionGroup } from '../../../elements/Transitions/Transitions'
 import { useAppContext } from '../../../context/AppContext/AppContextProvider'
-import { weekdaysArrayAmerican } from '../../../constants'
+import { weekdaysArrayAmerican, monthSheduleArr } from '../../../constants'
 import Slide from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,7 +26,7 @@ export const DaySchedule: React.FC<DayScheduleProps> = () => {
     } = useAppContext();
 
     const theme = darkTheme ? "NightTheme" : "DayTheme";
-console.log("showDayPlan", showDayPlan)
+
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
@@ -36,14 +36,14 @@ console.log("showDayPlan", showDayPlan)
                 <div className={cnDaySchedule(`${theme}-Header`)}>
                     <div className={cnDaySchedule(`${theme}-Header-Navigation`)}>
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
-                            onClick={() => { toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(),  showDayPlan.getDate() - 1)) }}>
+                            onClick={() => { toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() - 1)) }}>
                             <KeyboardArrowLeftIcon />
                         </IconButton>
                         <Typography variant="h6">
                             {weekdaysArrayAmerican[showDayPlan.getDay()]}, {showDayPlan.getDate()}
                         </Typography>
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
-                            onClick={() => {toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(),  showDayPlan.getDate() + 1)) }}
+                            onClick={() => { toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() + 1)) }}
                         >
                             <KeyboardArrowRightIcon />
                         </IconButton>
@@ -54,6 +54,14 @@ console.log("showDayPlan", showDayPlan)
                         <CloseIcon />
                     </IconButton>
                 </div>
+                {monthSheduleArr.map((el) => {
+                    if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) return <div className={cnDaySchedule(`${theme}-taskList`)}>
+                        {el.todo.map((el) => <div
+                            className={cnDaySchedule(`${theme}-taskList-item`)}>
+                            {el.time}: {el.title}
+                        </div>)}
+                    </div>
+                })}
             </div>}
         </Slide>
     </TransitionGroup>
