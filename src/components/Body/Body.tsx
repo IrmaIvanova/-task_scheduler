@@ -38,16 +38,6 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         );
     }, [rendered]);
 
-
-    // console.log("monthSheduleArr", monthSheduleArr)
-
-    // const getRandomVibrantColor = () => {
-    //     const hue = Math.floor(Math.random() * 360);
-    //     const saturation = Math.floor(Math.random() * (100 - 65) + 65);
-    //     const lightness = Math.floor(Math.random() * (100 - 50) + 50);
-    //     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-    // }
-    console.log("monthSheduleArr", monthSheduleArr)
     return <div className={cnCalendarBody(`${theme}`)}>
         {weekdays.map((el: string, index: number) => <div className={cnCalendarBody(`${index > 4 ? `${theme}-weekends` : `${theme}-weekdays`} CalendarBody__${theme}Box`,)}>{el}</div>)}
         {[...Array(42)].map((_, i) => {
@@ -72,17 +62,17 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
                 {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
 
-                {/* <div className={cnCalendarBody(`${theme}-taskList`)}>
-                    {el.todo.map((el) => <div
-                        className={cnCalendarBody(`${theme}-taskList-item`)}>
-                    </div>)}
-                </div> */}
                 {monthSheduleArr.map((el) => {
-                    if (el.day === day && el.month === selectMonth && el.year === selectYear) return <div className={cnCalendarBody(`${theme}-taskList`)}>
-                        {el.todo.map((el) => <div
-                            className={cnCalendarBody(`${theme}-taskList-item`)}>
-                        </div>)}
-                    </div>
+                    if (el.day === day && el.month === selectMonth && el.year === selectYear) {
+                        return <div className={cnCalendarBody(`${theme}-taskList`)}>
+                            {el.todo.map((el) => {
+                                return <div
+                                    className={cnCalendarBody(`${theme}-taskList-item`)}>
+                                </div>
+                            })}
+                        </div>
+                    }
+                    return null
                 })}
 
             </div>

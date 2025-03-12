@@ -36,6 +36,9 @@ export const Layout: React.FC<LayoutProps> = () => {
                 <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
 
                     <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
+                    <Button darkTheme={darkTheme} 
+                    onClick={() =>  toggleShowDayPlan(new Date())} 
+                    children='сегодня' />
                     <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
                 </div>
                 <button

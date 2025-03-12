@@ -25,12 +25,12 @@ export const useCreateAppContext = function (props) {
 
     const toggleOpen = React.useCallback((open) => {
         setOpen(open);
-    }, [open]);
+    }, []);
 
     const toggleShowDayPlan = React.useCallback((day) => {
 
         setShowDayPlan(day);
-    }, [showDayPlan]);
+    }, []);
 
 
 

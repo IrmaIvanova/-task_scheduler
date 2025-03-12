@@ -7,10 +7,8 @@ import Slide from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import './DaySchedule.scss'
 
 
@@ -55,12 +53,14 @@ export const DaySchedule: React.FC<DayScheduleProps> = () => {
                     </IconButton>
                 </div>
                 {monthSheduleArr.map((el) => {
-                    if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) return <div className={cnDaySchedule(`${theme}-taskList`)}>
+                    if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()){ 
+                        return <div className={cnDaySchedule(`${theme}-taskList`)}>
                         {el.todo.map((el) => <div
                             className={cnDaySchedule(`${theme}-taskList-item`)}>
                             {el.time}: {el.title}
                         </div>)}
-                    </div>
+                    </div>}
+                    return null;
                 })}
             </div>}
         </Slide>
