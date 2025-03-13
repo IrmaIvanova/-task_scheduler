@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom';
 import "./Body.scss"
 import { DaySchedule } from "./DaySchedule/DaySchedule"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
-import { monthSheduleArr } from '../../constants'
 
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today }) => {
 
@@ -15,6 +14,8 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
     const [rendered, setRender] = React.useState(false)
 
+
+    
     React.useEffect(() => {
         setRender(true)
     }, [])
@@ -24,7 +25,8 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         showDayPlan,
         toggleShowDayPlan,
         toggleOpen,
-        open
+        open,
+        plan
     } = useAppContext();
 
 
@@ -62,7 +64,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
                 {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
 
-                {monthSheduleArr.map((el) => {
+                {plan.map((el) => {
                     if (el.day === day && el.month === selectMonth && el.year === selectYear) {
                         return <div className={cnCalendarBody(`${theme}-taskList`)}>
                             {el.todo.map((el) => {

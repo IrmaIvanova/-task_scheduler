@@ -1,4 +1,5 @@
 import * as React from "react"
+import { weekdaysArray } from '../../constants'
 const Context = React.createContext(null);
 
 
@@ -13,10 +14,17 @@ export const useAppContext = () => {
     return context;
 }
 
+
 export const useCreateAppContext = function (props) {
     const [darkTheme, setDarkTheme] = React.useState(false)
     const [showDayPlan, setShowDayPlan] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
+    let getPlanFromLocalStorage = localStorage.getItem("myPlan")
+
+    const [plan, setPlan] = React.useState(JSON.parse(getPlanFromLocalStorage) || [])
+
+
+    // localStorage.setItem("myPlan",JSON.stringify( weekdaysArray))
 
 
     const toggleTheme = React.useCallback(() => {
@@ -28,18 +36,41 @@ export const useCreateAppContext = function (props) {
     }, []);
 
     const toggleShowDayPlan = React.useCallback((day) => {
-
         setShowDayPlan(day);
+
     }, []);
 
+    console.log("plan", plan)
 
+    const addToDoItem = (dayPLan) => {
 
+        const dayPlanExist = plan.find((el) => el.day === dayPLan.day && el.month === dayPLan.month && el.year === dayPLan.year)
+        if (!dayPlanExist) {
+           
+            setPlan([...plan, dayPLan]) 
+           
+        }  else {
+            let changedPlan = plan.reduce((acc, dayItem) => {
+                if (dayItem.day === dayPLan.day && dayItem.month === dayPLan.month && dayItem.year === dayPLan.year) {
+                    return [...acc, dayPLan]; 
+                }
+
+                return [...acc, dayItem];
+            }, []);
+
+            setPlan(changedPlan)
+        }
+
+    };
+   
     return {
         darkTheme,
         showDayPlan,
         open,
+        plan,
         toggleShowDayPlan,
         toggleTheme,
-        toggleOpen
+        toggleOpen,
+        addToDoItem
     };
 }
