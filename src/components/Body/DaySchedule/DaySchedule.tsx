@@ -13,6 +13,11 @@ import './DaySchedule.scss'
 import { Button } from '../../../elements/Button/Button'
 import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
+import { ToDoItem, BaseToDoItemObject } from '../../../elements/ToDoItem/ToDoItem'
+import { IToDoItem } from '../../../elements/ToDoItem/ToDoItem.index'
+
+
+
 
 export interface IDayListItem {
     day: number,
@@ -21,11 +26,7 @@ export interface IDayListItem {
     todo: IToDoItem[]
 }
 
-export interface IToDoItem {
-    title: string,
-    time: string,
-    id: string
-}
+
 
 const DaySchedule: React.FC<DayScheduleProps> = () => {
     const {
@@ -39,20 +40,27 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         addToDoItem
     } = useAppContext();
 
-    const [dayList, setDayList] = React.useState<IDayListItem>({
+    const baseDayList = {
         day: showDayPlan.getDate(),
         month: showDayPlan.getMonth(),
         year: showDayPlan.getFullYear(),
         todo: []
-    })
+    }
+    const [dayList, setDayList] = React.useState<IDayListItem>(baseDayList)
+
+
+    React.useEffect(() => {
+        setDayList({
+            day: showDayPlan.getDate(),
+            month: showDayPlan.getMonth(),
+            year: showDayPlan.getFullYear(),
+            todo: []
+        })
+    }, [showDayPlan])
 
     const [shownInput, setShowInput] = React.useState(false)
 
-    const [toDoItem, setToDoItem] = React.useState<IToDoItem>({
-        title: "",
-        time: "",
-        id: ""
-    })
+    const [toDoItem, setToDoItem] = React.useState<IToDoItem>(BaseToDoItemObject)
 
     const theme = darkTheme ? "NightTheme" : "DayTheme";
 
@@ -67,40 +75,36 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         setShowInput(false)
 
         setDayList({ ...dayList, todo: [...dayList.todo, toDoItem] })
-        console.log("showDayPlan", showDayPlan)
+
 
         addToDoItem({
-            day: showDayPlan.getDate(),
-            month: showDayPlan.getMonth(),
-            year: showDayPlan.getFullYear(),
+            ...baseDayList,
             todo: [...dayList.todo, toDoItem]
             // todo: [...dayList.todo, toDoItem]
         })
-
-        setToDoItem({
-            title: "",
-            time: "",
-            id: ""
-        })
+        setToDoItem(BaseToDoItemObject)
     }
 
 
 
     const memoToday = React.useMemo(() => plan.map((el) => {
         if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) {
+
             setDayList({ ...dayList, todo: [...el.todo] });
 
             return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
-                {el.todo.map((el) => <div
-                    className={cnDaySchedule(`${theme}-taskList-item`)}>
-                    {/* {el.time}: */}
-                     {el.title}
-                </div>)}
+                {el.todo.map((el) => <ToDoItem
+                    key={el.id}
+                    title={el.title}
+                    id={el.id}
+                    theme={theme}
+                    time={el.time}
+                    checked={el.checked} />)}
             </div>
         }
         return null;
-    }), [plan, showDayPlan])
+    }), [plan, showDayPlan, darkTheme])
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
@@ -112,12 +116,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
                             onClick={() => {
                                 toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() - 1));
-                                setDayList({
-                                    day: showDayPlan.getDate(),
-                                    month: showDayPlan.getMonth(),
-                                    year: showDayPlan.getFullYear(),
-                                    todo: []
-                                })
+                                setDayList(baseDayList)
 
                             }}>
                             <KeyboardArrowLeftIcon />
@@ -128,12 +127,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
                             onClick={() => {
                                 toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() + 1));
-                                setDayList({
-                                    day: showDayPlan.getDate(),
-                                    month: showDayPlan.getMonth(),
-                                    year: showDayPlan.getFullYear(),
-                                    todo: []
-                                })
+                                setDayList(baseDayList)
                             }}
                         >
                             <KeyboardArrowRightIcon />

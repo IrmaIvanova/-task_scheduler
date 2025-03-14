@@ -19,12 +19,7 @@ export const Layout: React.FC<LayoutProps> = () => {
     let actualMonth = today.getMonth();
 
     let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
-    console.log("isScreenLg", isScreenLg,
-        "isScreenMd", isScreenMd,
-        "isScreenSm", isScreenSm,
-        "isScreenXl", isScreenXl,
-        "isScreenXxl", isScreenXxl,
-        width)
+ 
     const monthChangeButton = (forward: boolean) => {
         if (forward) {
             toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() + 1, showDayPlan.getDate()))

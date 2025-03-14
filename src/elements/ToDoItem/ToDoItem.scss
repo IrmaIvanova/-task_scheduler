@@ -1,0 +1,15 @@
+.ToDoItem__NightTheme {
+    &-taskList-item {
+        background-color: #7fffd4a6;
+        padding: 10px 20px;
+        border-radius: 25px;
+    }
+}
+
+.ToDoItem__DayTheme {
+    &-taskList-item {
+        background-color: rgb(39 209 17 / 45%);
+        padding: 10px 20px;
+        border-radius: 25px;
+    }
+}

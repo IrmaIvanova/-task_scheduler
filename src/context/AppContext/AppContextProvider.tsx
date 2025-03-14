@@ -49,8 +49,6 @@ export const useCreateAppContext = function (props) {
         if (!dayPlanExist) {
 
             setPlan([...plan, dayPLan])
-
-            console.log("plan", plan)
             
             localStorage.setItem("myPlan", JSON.stringify([...plan, dayPLan]))
             return
