@@ -2,7 +2,7 @@ import * as React from "react"
 import { BodyProps, cnCalendarBody } from "./Body.index"
 import { createPortal } from 'react-dom';
 import "./Body.scss"
-import { DaySchedule } from "./DaySchedule/DaySchedule"
+import  DaySchedule  from "./DaySchedule/DaySchedule"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today }) => {
@@ -38,7 +38,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
             <DaySchedule />,
             root!
         );
-    }, [rendered]);
+    }, [rendered, showDayPlan]);
 
     return <div className={cnCalendarBody(`${theme}`)}>
         {weekdays.map((el: string, index: number) => <div className={cnCalendarBody(`${index > 4 ? `${theme}-weekends` : `${theme}-weekdays`} CalendarBody__${theme}Box`,)}>{el}</div>)}

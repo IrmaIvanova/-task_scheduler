@@ -4,15 +4,15 @@
     &__NightTheme {
         background-color: rgb(59, 3, 82);
         padding: 25px;
-        height: 100vh;
         display: flex;
+        grid-gap: 25px;
     }
 
     &__DayTheme {
         background-color: rgb(246, 252, 170);
         padding: 25px;
-        height: 100vh;
         display: flex;
+        grid-gap: 25px;
     }
 
     &__ButtonBox {
@@ -72,5 +72,28 @@
 
     &__switch-on::after {
         left: 37px;
+    }
+
+
+
+}
+
+@media only screen and (max-width: 576px) {
+    .LayoutBody {
+        &__NightTheme {
+            background-color: rgb(59, 3, 82);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            grid-gap: 25px;
+        }
+
+        &__DayTheme {
+            background-color: rgb(246, 252, 170);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            grid-gap: 25px;
+        }
     }
 }

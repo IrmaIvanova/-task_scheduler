@@ -45,7 +45,7 @@
         line-height: 16px;
         font-size: 16px;
         cursor: pointer;
-        
+
         &.right::before {
             content: '';
             display: block;
@@ -68,6 +68,36 @@
             right: 83px;
             top: 0
         }
+    }
+
+}
+
+
+@media only screen and (max-width: 576px) {
+    .Button {
+        &__DayBTN {
+            padding: 10px 10px;
+
+            &.left::before {
+                content: '';
+                display: block;
+                right: 63px;
+            }
+        }
+
+
+
+        &__NightBTN {
+            padding: 10px 10px;
+
+
+            &.left::before {
+                content: '';
+                display: block;
+                right: 63px;
+            }
+        }
+
     }
 
 }

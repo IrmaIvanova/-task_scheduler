@@ -15,9 +15,9 @@ import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface IDayListItem {
-    day: string,
-    month: string,
-    year: string,
+    day: number,
+    month: number,
+    year: number,
     todo: IToDoItem[]
 }
 
@@ -27,7 +27,7 @@ export interface IToDoItem {
     id: string
 }
 
-export const DaySchedule: React.FC<DayScheduleProps> = () => {
+const DaySchedule: React.FC<DayScheduleProps> = () => {
     const {
         showDayPlan,
 
@@ -67,7 +67,7 @@ export const DaySchedule: React.FC<DayScheduleProps> = () => {
         setShowInput(false)
 
         setDayList({ ...dayList, todo: [...dayList.todo, toDoItem] })
-console.log("showDayPlan",showDayPlan)
+        console.log("showDayPlan", showDayPlan)
 
         addToDoItem({
             day: showDayPlan.getDate(),
@@ -88,18 +88,19 @@ console.log("showDayPlan",showDayPlan)
 
     const memoToday = React.useMemo(() => plan.map((el) => {
         if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) {
-          
+            setDayList({ ...dayList, todo: [...el.todo] });
+
             return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
                 {el.todo.map((el) => <div
                     className={cnDaySchedule(`${theme}-taskList-item`)}>
-                    {el.time}: {el.title}
+                    {/* {el.time}: */}
+                     {el.title}
                 </div>)}
             </div>
         }
         return null;
     }), [plan, showDayPlan])
-
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
@@ -144,20 +145,28 @@ console.log("showDayPlan",showDayPlan)
                         <CloseIcon />
                     </IconButton>
                 </div>
+                {memoToday}
 
                 {shownInput && <TextField
                     label="With normal TextField"
                     variant="standard"
                     id="outlined-start-adornment"
 
-                    onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value,  })}
+                    onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
 
                 <Button darkTheme={darkTheme}
                     onClick={() => shownInput ? saveTask() : addTask()}
                     children={shownInput ? "Сохранить" : "Добавить"} />
 
-                {memoToday}
+                {shownInput && <Button darkTheme={darkTheme}
+                    onClick={() => {
+                        setToDoItem({ ...toDoItem, title: "", })
+                        setShowInput(false)
+                    }}
+                    children={"Отмена"} />
+                }
+
 
 
             </div>}
@@ -166,3 +175,5 @@ console.log("showDayPlan",showDayPlan)
 
 
 }
+
+export default React.memo(DaySchedule);

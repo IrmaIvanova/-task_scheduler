@@ -6,6 +6,10 @@ import { LayoutProps, cnLayoutBody } from './Layout.index'
 import "./Layout.scss"
 import { Button } from '../../elements/Button/Button'
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
+import { useResize } from '../../hooks/resizeHook/resizeHook'
+
+
+
 
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
@@ -14,6 +18,13 @@ export const Layout: React.FC<LayoutProps> = () => {
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
 
+    let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
+    console.log("isScreenLg", isScreenLg,
+        "isScreenMd", isScreenMd,
+        "isScreenSm", isScreenSm,
+        "isScreenXl", isScreenXl,
+        "isScreenXxl", isScreenXxl,
+        width)
     const monthChangeButton = (forward: boolean) => {
         if (forward) {
             toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() + 1, showDayPlan.getDate()))
@@ -24,21 +35,21 @@ export const Layout: React.FC<LayoutProps> = () => {
             toggleOpen(false)
 
         }
-  
+
 
     }
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
 
 
-        <div style={{ width: open ? "80%" : "100%" }}>
+        <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
             <div className={cnLayoutBody("ButtonBox")} >
                 <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
 
                     <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
-                    <Button darkTheme={darkTheme} 
-                    onClick={() =>  toggleShowDayPlan(new Date())} 
-                    children='сегодня' />
+                    <Button darkTheme={darkTheme}
+                        onClick={() => toggleShowDayPlan(new Date())}
+                        children='сегодня' />
                     <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
                 </div>
                 <button
@@ -63,7 +74,7 @@ export const Layout: React.FC<LayoutProps> = () => {
                 weekdays={weekdaysArray} />
         </div>
 
-        <div id="DayScheduleBox" style={{ width: open ? "20%" : "0" }}></div>
+        <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
     </div>
 
 }

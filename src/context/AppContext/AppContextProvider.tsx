@@ -19,6 +19,7 @@ export const useCreateAppContext = function (props) {
     const [darkTheme, setDarkTheme] = React.useState(false)
     const [showDayPlan, setShowDayPlan] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
+
     let getPlanFromLocalStorage = localStorage.getItem("myPlan")
 
     const [plan, setPlan] = React.useState(JSON.parse(getPlanFromLocalStorage) || [])
@@ -40,29 +41,34 @@ export const useCreateAppContext = function (props) {
 
     }, []);
 
-    console.log("plan", plan)
+
 
     const addToDoItem = (dayPLan) => {
 
         const dayPlanExist = plan.find((el) => el.day === dayPLan.day && el.month === dayPLan.month && el.year === dayPLan.year)
         if (!dayPlanExist) {
-           
-            setPlan([...plan, dayPLan]) 
-           
-        }  else {
+
+            setPlan([...plan, dayPLan])
+
+            console.log("plan", plan)
+            
+            localStorage.setItem("myPlan", JSON.stringify([...plan, dayPLan]))
+            return
+        } else {
             let changedPlan = plan.reduce((acc, dayItem) => {
                 if (dayItem.day === dayPLan.day && dayItem.month === dayPLan.month && dayItem.year === dayPLan.year) {
-                    return [...acc, dayPLan]; 
+                    return [...acc, dayPLan];
                 }
 
                 return [...acc, dayItem];
             }, []);
 
             setPlan(changedPlan)
+            localStorage.setItem("myPlan", JSON.stringify(changedPlan))
         }
 
     };
-   
+
     return {
         darkTheme,
         showDayPlan,
