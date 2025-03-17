@@ -1,4 +1,10 @@
 .CalendarHeader {
+    &__DateShow {
+        width: 300px;
+        display: flex;
+        justify-content: center;
+    }
+
     &__HeaderDark {
         background-color: rgb(103, 3, 128);
         color: rgb(217, 141, 252);
@@ -6,6 +12,9 @@
         margin-bottom: 10px;
         border-radius: 25px;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     &__Header {
@@ -15,6 +24,9 @@
         margin-bottom: 10px;
         border-radius: 25px;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
 }

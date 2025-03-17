@@ -19,41 +19,19 @@ export const Layout: React.FC<LayoutProps> = () => {
     let actualMonth = today.getMonth();
 
     let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
- 
-    const monthChangeButton = (forward: boolean) => {
-        if (forward) {
-            toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() + 1, showDayPlan.getDate()))
-            toggleOpen(false)
-
-        } else {
-            toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth() - 1, showDayPlan.getDate()))
-            toggleOpen(false)
-
-        }
 
 
-    }
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
 
 
         <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
-            <div className={cnLayoutBody("ButtonBox")} >
-                <div className={cnLayoutBody("ButtonBox-ForwardBack")} >
+            <button
+                className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
+                onClick={() => toggleTheme()}
+            >
 
-                    <Button darkTheme={darkTheme} arrow={'left'} onClick={() => monthChangeButton(false)} children='назад' />
-                    <Button darkTheme={darkTheme}
-                        onClick={() => toggleShowDayPlan(new Date())}
-                        children='сегодня' />
-                    <Button darkTheme={darkTheme} arrow={'right'} onClick={() => monthChangeButton(true)} children='вперёд' />
-                </div>
-                <button
-                    className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
-                    onClick={() => toggleTheme()}
-                >
-
-                </button>
-            </div>
+            </button>
             <Header
                 darkTheme={darkTheme}
                 month={monthArray[showDayPlan.getMonth()]}
