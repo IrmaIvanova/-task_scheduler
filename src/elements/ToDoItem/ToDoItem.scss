@@ -3,6 +3,9 @@
         background-color: #7fffd4a6;
         padding: 10px 20px;
         border-radius: 25px;
+        display: flex;
+        justify-content: space-between;
+        
     }
 }
 
@@ -11,5 +14,12 @@
         background-color: rgb(39 209 17 / 45%);
         padding: 10px 20px;
         border-radius: 25px;
+        display: flex;
+        justify-content: space-between;
     }
+}
+
+.ControllButtons{
+            background-color: transparent;
+            padding:0;
 }

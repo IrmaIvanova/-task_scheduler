@@ -50,6 +50,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
 
     React.useEffect(() => {
+        // TODO fix rewriting tasks for a day if in day alrady was tasks
         setDayList({
             day: showDayPlan.getDate(),
             month: showDayPlan.getMonth(),
