@@ -11,12 +11,13 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { DropDown } from '../../elements/Dropdown/Dropdown'
 import { monthArray, createArrayYears } from '../../constants'
 
-
+let today = new Date()
 let yearOptions = createArrayYears(new Date().getFullYear())
+
+
 export const Header: React.FC<HeaderProps> = ({ month, year }) => {
 
     const { darkTheme, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
-
 
     const theme = darkTheme ? "HeaderDark" : "Header";
 
@@ -53,10 +54,15 @@ export const Header: React.FC<HeaderProps> = ({ month, year }) => {
         </IconButton>
 
         <div className={cnCalendarHeader(`DateShow`)}>
-            <DropDown options={monthArray} defText={monthArray[showDayPlan.getMonth()]}
+            <DropDown
+                options={[monthArray[today.getMonth()], "-", ...monthArray]}
+                defText={monthArray[showDayPlan.getMonth()]}
                 handleChange={handleMonthChange}
             />
-            <DropDown options={yearOptions} defText={showDayPlan.getFullYear()} handleChange={handleYearChange} />
+            <DropDown
+                options={[today.getFullYear(), "-", ...yearOptions]}
+                defText={showDayPlan.getFullYear()}
+                handleChange={handleYearChange} />
         </div>
 
         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
