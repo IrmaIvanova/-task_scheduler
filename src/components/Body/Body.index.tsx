@@ -10,5 +10,5 @@ export interface BodyProps {
     actualMonth: number,
     today: number,
     darkTheme:boolean,
-
+width:number,
 }

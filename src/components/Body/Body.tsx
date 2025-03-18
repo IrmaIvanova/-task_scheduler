@@ -2,10 +2,10 @@ import * as React from "react"
 import { BodyProps, cnCalendarBody } from "./Body.index"
 import { createPortal } from 'react-dom';
 import "./Body.scss"
-import  DaySchedule  from "./DaySchedule/DaySchedule"
+import DaySchedule from "./DaySchedule/DaySchedule"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 
-export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today }) => {
+export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today, width }) => {
 
     const firstDay = new Date(selectYear, selectMonth, 0).getDay()
     const monthDaysCount = new Date(selectYear, selectMonth + 1, 0).getDate()
@@ -15,7 +15,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
     const [rendered, setRender] = React.useState(false)
 
 
-    
+
     React.useEffect(() => {
         setRender(true)
     }, [])
@@ -26,9 +26,8 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         toggleShowDayPlan,
         toggleOpen,
         open,
-        plan
+        plan,
     } = useAppContext();
-
 
 
     const DayScheduleRender = React.useMemo(() => {
@@ -66,6 +65,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
                 {plan.map((el) => {
                     if (el.day === day && el.month === selectMonth && el.year === selectYear) {
+                        if (width<500) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> {el?.todo?.length} </div>;
                         return <div className={cnCalendarBody(`${theme}-taskList`)}>
                             {el.todo.map((el) => {
                                 return <div

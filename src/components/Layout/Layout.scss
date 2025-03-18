@@ -81,19 +81,26 @@
 @media only screen and (max-width: 796px) {
     .LayoutBody {
         &__NightTheme {
-            background-color: rgb(59, 3, 82);
-            padding: 25px;
             display: flex;
             flex-direction: column;
-            grid-gap: 25px;
         }
 
         &__DayTheme {
-            background-color: rgb(246, 252, 170);
-            padding: 25px;
             display: flex;
             flex-direction: column;
-            grid-gap: 25px;
+        }
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+    .LayoutBody {
+        &__NightTheme {
+            padding: 10px;
+        }
+
+        &__DayTheme {
+            padding: 10px;
         }
     }
 }

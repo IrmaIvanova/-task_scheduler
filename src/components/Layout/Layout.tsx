@@ -44,7 +44,8 @@ export const Layout: React.FC<LayoutProps> = () => {
                 actualMonth={actualMonth}
                 selectMonth={showDayPlan.getMonth()}
                 selectYear={showDayPlan.getFullYear()}
-                weekdays={weekdaysArray} />
+                weekdays={weekdaysArray} 
+                width={width}/>
         </div>
 
         <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
