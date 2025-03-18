@@ -11,7 +11,7 @@ export const BaseToDoItemObject = {
     id: "",
     checked: false
 }
-export const ToDoItem: React.FC<IToDoItemOwnProps> = ({ id, time, title, theme }) => {
+export const ToDoItem: React.FC<IToDoItemOwnProps> = ({ id, time, title="название", theme }) => {
 
     return <div className={cnToDoItem(`${theme}-taskList-item`)}>
         {/* {el.time}: */}

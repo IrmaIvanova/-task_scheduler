@@ -51,11 +51,16 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
     React.useEffect(() => {
         // TODO fix rewriting tasks for a day if in day alrady was tasks
+
+
+        let hasTodosObj = plan.find((el) => el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) || []
+
+        console.log("hasTodosObj", hasTodosObj)
         setDayList({
             day: showDayPlan.getDate(),
             month: showDayPlan.getMonth(),
             year: showDayPlan.getFullYear(),
-            todo: []
+            todo: hasTodosObj?.todo || []
         })
     }, [showDayPlan])
 
@@ -77,7 +82,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
         setDayList({ ...dayList, todo: [...dayList.todo, toDoItem] })
 
-
+        console.log("dayList", dayList)
         addToDoItem({
             ...baseDayList,
             todo: [...dayList.todo, toDoItem]
@@ -90,18 +95,24 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
     const memoToday = React.useMemo(() => plan.map((el) => {
         if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) {
-
-            setDayList({ ...dayList, todo: [...el.todo] });
-
+            console.log("el", el)
             return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
-                {el.todo.map((el) => <ToDoItem
-                    key={el.id}
-                    title={el.title}
-                    id={el.id}
-                    theme={theme}
-                    time={el.time}
-                    checked={el.checked} />)}
+                {el?.todo?.map((el) => {
+                    if(!el){
+                        return null;
+                    }
+                    if (el) {
+                        return <ToDoItem
+                            key={el.id}
+                            title={el.title || ""}
+                            id={el.id}
+                            theme={theme}
+                            time={el.time}
+                            checked={el.checked} />
+                    }
+                }
+                )}
             </div>
         }
         return null;
