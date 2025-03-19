@@ -21,10 +21,10 @@ export const useCreateAppContext = function (props) {
     const [open, setOpen] = React.useState(false)
 
     let getPlanFromLocalStorage = localStorage.getItem("myPlan")
+    // localStorage.clear();
+    const [plan, setPlan] = React.useState( JSON.parse(getPlanFromLocalStorage) || [])
 
-    const [plan, setPlan] = React.useState(JSON.parse(getPlanFromLocalStorage) || [])
-
-
+// 
     // localStorage.setItem("myPlan",JSON.stringify( weekdaysArray))
 
 

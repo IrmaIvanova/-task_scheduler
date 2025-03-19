@@ -82,7 +82,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
         setDayList({ ...dayList, todo: [...dayList.todo, toDoItem] })
 
-        console.log("dayList", dayList)
+
         addToDoItem({
             ...baseDayList,
             todo: [...dayList.todo, toDoItem]
@@ -91,15 +91,41 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         setToDoItem(BaseToDoItemObject)
     }
 
+    const checkTask = (id: string) => {
+       
+
+
+        const taskDone = dayList.todo.find((todoItem) => todoItem.id === id);
+        taskDone.checked = !taskDone.checked;
+
+        console.log("dayList", dayList)
+        // console.log("taskDone", taskDone)
+
+        addToDoItem({
+            dayList
+        })
+    };
+
+    const deleteTask = (id: string) => {
+ 
+        const filteredTodoList = dayList.todo.filter((todoItem) => todoItem.id !== id);
+
+        addToDoItem({
+            ...baseDayList,
+            todo: filteredTodoList
+        })
+
+        setDayList({ ...dayList,  todo: filteredTodoList })
+      
+    };
 
 
     const memoToday = React.useMemo(() => plan.map((el) => {
         if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) {
-            console.log("el", el)
             return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
                 {el?.todo?.map((el) => {
-                    if(!el){
+                    if (!el) {
                         return null;
                     }
                     if (el) {
@@ -109,14 +135,17 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                             id={el.id}
                             theme={theme}
                             time={el.time}
-                            checked={el.checked} />
+                            checked={el.checked}
+                            onCheckClick={checkTask}
+                            onDelClick={deleteTask}
+                        />
                     }
                 }
                 )}
             </div>
         }
         return null;
-    }), [plan, showDayPlan, darkTheme])
+    }), [plan, showDayPlan, darkTheme, dayList])
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>

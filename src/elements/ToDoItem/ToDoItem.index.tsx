@@ -7,9 +7,12 @@ export interface IToDoItem {
     time: string,
     id: string,
     checked: boolean,
+ 
 }
 
 
 export interface IToDoItemOwnProps extends IToDoItem{
     theme: string;
+    onCheckClick: (id:string)=> void
+    onDelClick: (id:string)=> void
 }
