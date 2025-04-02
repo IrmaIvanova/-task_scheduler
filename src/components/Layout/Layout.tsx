@@ -20,7 +20,7 @@ export const Layout: React.FC<LayoutProps> = () => {
 
     let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
 
-
+    // ${darkTheme ? "NightTheme" : 
 
     return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
 
@@ -50,5 +50,6 @@ export const Layout: React.FC<LayoutProps> = () => {
 
         <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
     </div>
+   
 
 }

@@ -4,6 +4,10 @@ import { createPortal } from 'react-dom';
 import "./Body.scss"
 import DaySchedule from "./DaySchedule/DaySchedule"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
+import { useSelector, useDispatch } from 'react-redux'
+import { setPlanner } from '../../redux/reducers/plannerReducer'
+import { RootState } from '../../redux/store'
+import { Item } from "./Item/Item";
 
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today, width }) => {
 
@@ -14,7 +18,40 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
     const [rendered, setRender] = React.useState(false)
 
+    const planIDS = useSelector((state: RootState) => state.planner.plannerCollectionIds)
+    const dispatch = useDispatch()
 
+
+
+
+    const getPlanner = () => {
+        fetch('http://localhost:5000/api/task/planner', {
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                let dayCollection = result.reduce((acc, dayItem) => {
+                    let dayArr = dayItem.date.split('.');
+                    return {
+                        ...acc, [dayItem.date]: {
+                            ...dayItem,
+                            day: +dayArr[0],
+                            month: +dayArr[1] - 1,
+                            year: +dayArr[2],
+                        }
+                    }
+                }, {});
+
+                let dayCollectionIds = Object.keys(dayCollection)
+                dispatch(setPlanner({ listIds: dayCollectionIds, collectionList: dayCollection }))
+             
+            });
+    };
+
+
+    React.useEffect(() => {
+        getPlanner()
+    }, [])
 
     React.useEffect(() => {
         setRender(true)
@@ -26,7 +63,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         toggleShowDayPlan,
         toggleOpen,
         open,
-        plan,
+        // plan,
     } = useAppContext();
 
 
@@ -63,19 +100,20 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
                 {i >= firstDay && i < monthDaysCount + firstDay ? day : ""}
 
-                {plan.map((el) => {
-                    if (el.day === day && el.month === selectMonth && el.year === selectYear) {
-                        if (width<500) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> {el?.todo?.length} </div>;
-                        return <div className={cnCalendarBody(`${theme}-taskList`)}>
-                            {el.todo.map((el) => {
-                                return <div
-                                    className={cnCalendarBody(`${theme}-taskList-item`)}>
-                                </div>
-                            })}
-                        </div>
-                    }
-                    return null
-                })}
+                {
+                    planIDS.map((id) => {
+                        return <Item
+                            id={id}
+                            key={id}
+                            date={`${day}.0${selectMonth+1}.${selectYear}`}
+                            // day={day}
+                            // month={selectMonth}
+                            // year={selectYear}
+                            theme={theme}
+                            width={width}
+                             />
+                    })
+                }
 
             </div>
         }

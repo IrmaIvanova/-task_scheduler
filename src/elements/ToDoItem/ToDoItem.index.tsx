@@ -3,10 +3,10 @@ import {createCn as cn} from "bem-react-classname"
 export const cnToDoItem = cn("ToDoItem")
 
 export interface IToDoItem {
-    title: string,
-    time: string,
+    // title: string,
+    // time: string,
     id: string,
-    checked: boolean,
+    // checked: boolean,
  
 }
 

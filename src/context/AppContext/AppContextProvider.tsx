@@ -1,5 +1,18 @@
 import * as React from "react"
-import { weekdaysArray } from '../../constants'
+
+export interface Planner {
+    id: string,
+    date: string,
+    tasks: Task[]
+}
+
+export interface Task {
+    title: string,
+    time?: string,
+    id: string,
+    checked: boolean,
+    plannerId: string
+}
 const Context = React.createContext(null);
 
 
@@ -20,14 +33,6 @@ export const useCreateAppContext = function (props) {
     const [showDayPlan, setShowDayPlan] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
 
-    let getPlanFromLocalStorage = localStorage.getItem("myPlan")
-    // localStorage.clear();
-    const [plan, setPlan] = React.useState( JSON.parse(getPlanFromLocalStorage) || [])
-
-// 
-    // localStorage.setItem("myPlan",JSON.stringify( weekdaysArray))
-
-
     const toggleTheme = React.useCallback(() => {
         setDarkTheme(!darkTheme);
     }, [darkTheme]);
@@ -41,40 +46,12 @@ export const useCreateAppContext = function (props) {
 
     }, []);
 
-
-
-    const addToDoItem = (dayPLan) => {
-
-        const dayPlanExist = plan.find((el) => el.day === dayPLan.day && el.month === dayPLan.month && el.year === dayPLan.year)
-        if (!dayPlanExist) {
-
-            setPlan([...plan, dayPLan])
-            
-            localStorage.setItem("myPlan", JSON.stringify([...plan, dayPLan]))
-            return
-        } else {
-            let changedPlan = plan.reduce((acc, dayItem) => {
-                if (dayItem.day === dayPLan.day && dayItem.month === dayPLan.month && dayItem.year === dayPLan.year) {
-                    return [...acc, dayPLan];
-                }
-
-                return [...acc, dayItem];
-            }, []);
-
-            setPlan(changedPlan)
-            localStorage.setItem("myPlan", JSON.stringify(changedPlan))
-        }
-
-    };
-
     return {
         darkTheme,
         showDayPlan,
         open,
-        plan,
         toggleShowDayPlan,
         toggleTheme,
         toggleOpen,
-        addToDoItem
     };
 }

@@ -2,7 +2,7 @@ import * as React from "react"
 import { DayScheduleProps, cnDaySchedule } from './DaySchedule.index'
 import { TransitionGroup } from '../../../elements/Transitions/Transitions'
 import { useAppContext } from '../../../context/AppContext/AppContextProvider'
-import { weekdaysArrayAmerican, monthSheduleArr } from '../../../constants'
+import { weekdaysArrayAmerican } from '../../../constants'
 import Slide from '@mui/material/Slide';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,138 +14,186 @@ import { Button } from '../../../elements/Button/Button'
 import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
 import { ToDoItem, BaseToDoItemObject } from '../../../elements/ToDoItem/ToDoItem'
-import { IToDoItem } from '../../../elements/ToDoItem/ToDoItem.index'
+// import { IToDoItem } from '../../../elements/ToDoItem/ToDoItem.index'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../../redux/store'
+import {
+    addItemToPlanner,
+    Planner,
+    setPlanner,
+    setDayPlan
+} from '../../../redux/reducers/plannerReducer'
+import {
+    setTask,
+    Task,
+    addTask as addTastToRedux,
+    checkTask as checkTaskToRedux,
+    deleteTask as deleteTaskToRedux,
 
-
-
-
-export interface IDayListItem {
-    day: number,
-    month: number,
-    year: number,
-    todo: IToDoItem[]
-}
-
+} from '../../../redux/reducers/tasksReducer'
 
 
 const DaySchedule: React.FC<DayScheduleProps> = () => {
     const {
         showDayPlan,
-
         toggleShowDayPlan,
         toggleOpen,
         open,
         darkTheme,
-        plan,
-        addToDoItem
     } = useAppContext();
 
     const baseDayList = {
+        id: "",
+        date: `${showDayPlan.getDate()}.0${showDayPlan.getMonth() + 1}.${showDayPlan.getFullYear()}`,
         day: showDayPlan.getDate(),
         month: showDayPlan.getMonth(),
         year: showDayPlan.getFullYear(),
-        todo: []
+        tasks: []
     }
-    const [dayList, setDayList] = React.useState<IDayListItem>(baseDayList)
+ 
+    const dayPlan = useSelector((state: RootState) => {
+        return state.planner.dayPlan
+    }) || undefined;
 
+    const taskListIds = useSelector((state: RootState) => {
+        return state.tasks.tasksIds
+    }) || [];
+
+    const dispatch = useDispatch()
+
+    // TODO fix  multiple rerender 
+    console.log("dayPlan", dayPlan)
+
+
+
+
+    const getDay = (id: string) => {
+        fetch(`http://localhost:5000/api/task/planner/${id}`, {
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                // if (!result) ;
+
+                dispatch(setDayPlan({
+                    item: result || baseDayList
+                }))
+
+                // if (!result) return;
+
+                let dayTasksCollection = result?.tasks?.reduce((acc, taskItem) => {
+
+                    return {
+                        ...acc, [taskItem.id]: {
+                            ...taskItem,
+                        }
+                    }
+                }, {}) || {};
+
+                let dayTasksCollectionIds = Object.keys(dayTasksCollection) || []
+                dispatch(setTask({
+                    listIds: dayTasksCollectionIds,
+                    collectionList: dayTasksCollection
+                }))
+
+            });
+    };
 
     React.useEffect(() => {
         // TODO fix rewriting tasks for a day if in day alrady was tasks
-
-
-        let hasTodosObj = plan.find((el) => el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) || []
-
-        console.log("hasTodosObj", hasTodosObj)
-        setDayList({
-            day: showDayPlan.getDate(),
-            month: showDayPlan.getMonth(),
-            year: showDayPlan.getFullYear(),
-            todo: hasTodosObj?.todo || []
-        })
+        getDay(`${showDayPlan.getDate()}.0${showDayPlan.getMonth() + 1}.${showDayPlan.getFullYear()}`)
+   
     }, [showDayPlan])
 
     const [shownInput, setShowInput] = React.useState(false)
 
-    const [toDoItem, setToDoItem] = React.useState<IToDoItem>(BaseToDoItemObject)
+    const [toDoItem, setToDoItem] = React.useState<Task>({ ...BaseToDoItemObject })
 
     const theme = darkTheme ? "NightTheme" : "DayTheme";
 
     const addTask = () => {
         setShowInput(true)
 
-        setToDoItem({ ...toDoItem, id: uuidv4() })
-        // setDayList({...dayList, todo:[]})
+        setToDoItem({ ...toDoItem, plannerId: dayPlan.id, id: uuidv4() })
+
     }
 
     const saveTask = () => {
         setShowInput(false)
 
-        setDayList({ ...dayList, todo: [...dayList.todo, toDoItem] })
+        dispatch(addItemToPlanner({
+            id: dayPlan.date,
+            item: {
+                ...dayPlan,
+                tasks: [...dayPlan.tasks, toDoItem]
+            }
+        }))
+
+        dispatch(setDayPlan({
+            item: {
+                ...dayPlan,
+                tasks: [...dayPlan.tasks, toDoItem]
+            }
+        }))
 
 
-        addToDoItem({
-            ...baseDayList,
-            todo: [...dayList.todo, toDoItem]
-            // todo: [...dayList.todo, toDoItem]
-        })
+        dispatch(addTastToRedux({
+            id: toDoItem.id,
+            item: toDoItem
+        }))
+
+
         setToDoItem(BaseToDoItemObject)
     }
 
     const checkTask = (id: string) => {
-       
-
-
-        const taskDone = dayList.todo.find((todoItem) => todoItem.id === id);
-        taskDone.checked = !taskDone.checked;
-
-        console.log("dayList", dayList)
-        // console.log("taskDone", taskDone)
-
-        addToDoItem({
-            dayList
-        })
+        dispatch(checkTaskToRedux({ id }))
     };
 
     const deleteTask = (id: string) => {
- 
-        const filteredTodoList = dayList.todo.filter((todoItem) => todoItem.id !== id);
 
-        addToDoItem({
-            ...baseDayList,
-            todo: filteredTodoList
-        })
+        const filteredTodoList = dayPlan.tasks.filter((todoItem) => todoItem.id !== id);
+        
+        dispatch(addItemToPlanner({
+            id: dayPlan.date,
+            item: {
+                ...dayPlan,
+                tasks: filteredTodoList
+            }
+        }))
 
-        setDayList({ ...dayList,  todo: filteredTodoList })
-      
+        dispatch(setDayPlan({
+            item: {
+                ...dayPlan,
+                tasks: filteredTodoList
+            }
+        }))
+
+        dispatch(deleteTaskToRedux({ id }))
+
     };
 
+    const memoToday = React.useMemo(() => {
+        return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
-    const memoToday = React.useMemo(() => plan.map((el) => {
-        if (el.day === showDayPlan.getDate() && el.month === showDayPlan.getMonth() && el.year === showDayPlan.getFullYear()) {
-            return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
-                {el?.todo?.map((el) => {
-                    if (!el) {
-                        return null;
-                    }
-                    if (el) {
-                        return <ToDoItem
-                            key={el.id}
-                            title={el.title || ""}
-                            id={el.id}
-                            theme={theme}
-                            time={el.time}
-                            checked={el.checked}
-                            onCheckClick={checkTask}
-                            onDelClick={deleteTask}
-                        />
-                    }
+            {taskListIds?.map((el) => {
+                if (!el) {
+                    return null;
                 }
-                )}
-            </div>
-        }
-        return null;
-    }), [plan, showDayPlan, darkTheme, dayList])
+                if (el) {
+                    return <ToDoItem
+                        key={el}
+                        id={el}
+                        theme={theme}
+                        onCheckClick={checkTask}
+                        onDelClick={deleteTask}
+                    />
+                }
+            }
+            )}
+        </div>
+    }, [showDayPlan, darkTheme, taskListIds])
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
@@ -157,7 +205,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
                             onClick={() => {
                                 toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() - 1));
-                                setDayList(baseDayList)
+                                // setDayList(baseDayList)
 
                             }}>
                             <KeyboardArrowLeftIcon />
@@ -168,7 +216,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
                             onClick={() => {
                                 toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() + 1));
-                                setDayList(baseDayList)
+                                // setDayList(baseDayList)
                             }}
                         >
                             <KeyboardArrowRightIcon />
@@ -183,10 +231,6 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                 {memoToday}
 
                 {shownInput && <TextField
-                    label="With normal TextField"
-                    variant="standard"
-                    id="outlined-start-adornment"
-
                     onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
 
