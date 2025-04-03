@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export interface Task {
     title: string,
-    time?: string,
+    date?: string,
     id: string,
     checked: boolean,
     plannerId: string

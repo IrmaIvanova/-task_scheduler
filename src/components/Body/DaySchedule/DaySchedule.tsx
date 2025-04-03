@@ -13,7 +13,7 @@ import './DaySchedule.scss'
 import { Button } from '../../../elements/Button/Button'
 import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
-import { ToDoItem, BaseToDoItemObject } from '../../../elements/ToDoItem/ToDoItem'
+import { ToDoItem } from '../../../elements/ToDoItem/ToDoItem'
 // import { IToDoItem } from '../../../elements/ToDoItem/ToDoItem.index'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../../redux/store'
@@ -42,15 +42,28 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         darkTheme,
     } = useAppContext();
 
+    let month = showDayPlan.getMonth() < 9 ? `0${showDayPlan.getMonth() + 1}` : `${showDayPlan.getMonth() + 1}`
+
+
+    let selectedDay = `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`;
+
     const baseDayList = {
-        id: "",
-        date: `${showDayPlan.getDate()}.0${showDayPlan.getMonth() + 1}.${showDayPlan.getFullYear()}`,
-        day: showDayPlan.getDate(),
-        month: showDayPlan.getMonth(),
-        year: showDayPlan.getFullYear(),
-        tasks: []
+        id: selectedDay,
+        date: selectedDay,
+        // day: showDayPlan.getDate(),
+        // month: showDayPlan.getMonth(),
+        // year: showDayPlan.getFullYear(),
+        // tasks: []
     }
- 
+
+    const baseTodoItem = {
+        title: "",
+        id: "",
+        date: selectedDay,
+        checked: false,
+        plannerId: selectedDay,
+    }
+
     const dayPlan = useSelector((state: RootState) => {
         return state.planner.dayPlan
     }) || undefined;
@@ -64,6 +77,17 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     // TODO fix  multiple rerender 
     console.log("dayPlan", dayPlan)
 
+    const createDay = (dayItem: any) => {
+        fetch(`http://localhost:5000/api/task/planner`, {
+            method: 'POST',
+            body: JSON.stringify(dayItem),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => { })
+    }
 
 
 
@@ -73,16 +97,17 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         })
             .then((response) => response.json())
             .then((result) => {
-                // if (!result) ;
+
+                if (!result) {
+                    createDay(baseDayList)
+                }
 
                 dispatch(setDayPlan({
                     item: result || baseDayList
                 }))
 
-                // if (!result) return;
 
                 let dayTasksCollection = result?.tasks?.reduce((acc, taskItem) => {
-
                     return {
                         ...acc, [taskItem.id]: {
                             ...taskItem,
@@ -90,7 +115,8 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                     }
                 }, {}) || {};
 
-                let dayTasksCollectionIds = Object.keys(dayTasksCollection) || []
+                let dayTasksCollectionIds = Object.keys(dayTasksCollection) || [];
+
                 dispatch(setTask({
                     listIds: dayTasksCollectionIds,
                     collectionList: dayTasksCollection
@@ -99,27 +125,49 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
             });
     };
 
+
+
+    const saveTaskToServer = (taskItem: any) => {
+        fetch(`http://localhost:5000/api/task`, {
+            method: 'POST',
+            body: JSON.stringify(taskItem),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => {
+
+                console.log("res", result)
+            });
+    };
+
+
     React.useEffect(() => {
         // TODO fix rewriting tasks for a day if in day alrady was tasks
-        getDay(`${showDayPlan.getDate()}.0${showDayPlan.getMonth() + 1}.${showDayPlan.getFullYear()}`)
-   
+        let selectedDay = `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`;
+        getDay(selectedDay)
+
     }, [showDayPlan])
 
     const [shownInput, setShowInput] = React.useState(false)
 
-    const [toDoItem, setToDoItem] = React.useState<Task>({ ...BaseToDoItemObject })
+    const [toDoItem, setToDoItem] = React.useState<Task>(baseTodoItem)
 
     const theme = darkTheme ? "NightTheme" : "DayTheme";
 
     const addTask = () => {
         setShowInput(true)
 
-        setToDoItem({ ...toDoItem, plannerId: dayPlan.id, id: uuidv4() })
+        setToDoItem({ ...toDoItem, plannerId: dayPlan.id, date: dayPlan.id, id: uuidv4() })
 
     }
 
     const saveTask = () => {
         setShowInput(false)
+
+        saveTaskToServer(toDoItem)
+
 
         dispatch(addItemToPlanner({
             id: dayPlan.date,
@@ -132,7 +180,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         dispatch(setDayPlan({
             item: {
                 ...dayPlan,
-                tasks: [...dayPlan.tasks, toDoItem]
+                tasks: [...dayPlan.tasks, toDoItem],
             }
         }))
 
@@ -143,7 +191,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         }))
 
 
-        setToDoItem(BaseToDoItemObject)
+        setToDoItem(baseTodoItem)
     }
 
     const checkTask = (id: string) => {
@@ -153,7 +201,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     const deleteTask = (id: string) => {
 
         const filteredTodoList = dayPlan.tasks.filter((todoItem) => todoItem.id !== id);
-        
+
         dispatch(addItemToPlanner({
             id: dayPlan.date,
             item: {

@@ -8,14 +8,7 @@ import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
 
-export const BaseToDoItemObject = {
-    title: "",
-    time: "",
-    id: "",
-    checked: false,
-    plannerId: ""
 
-}
 export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
     id,
     theme,

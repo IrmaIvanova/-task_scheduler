@@ -10,12 +10,14 @@ export interface Planner {
     tasks: Task[]
 }
 
-
+export interface DayPlan extends Planner {
+    taskIDS: string[]
+}
 
 interface PlannerState {
     plannerCollection: { [key: string]: Planner };
     plannerCollectionIds: string[];
-    dayPlan: Planner | undefined
+    dayPlan: DayPlan | undefined
 }
 
 const initialState: PlannerState = {
@@ -44,13 +46,15 @@ const plannerSlice = createSlice({
 
         setDayPlan: (state, action) => {
             let { item } = action.payload;
-            state.dayPlan = item
+            let taskIDS = item?.tasks?.map((el) => { return el.id })||[];
+            state.dayPlan = item;
+            state.dayPlan.taskIDS = taskIDS;
         }
 
     }
 })
 
 // Функция действия генерируется на каждую функцию релюсера(reducer), определённую в createSlice
-export const { setPlanner, addItemToPlanner,  setDayPlan } = plannerSlice.actions
+export const { setPlanner, addItemToPlanner, setDayPlan } = plannerSlice.actions
 
 export default plannerSlice.reducer;
