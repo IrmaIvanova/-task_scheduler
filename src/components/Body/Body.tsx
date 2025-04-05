@@ -9,12 +9,12 @@ import { setPlanner } from '../../redux/reducers/plannerReducer'
 import { RootState } from '../../redux/store'
 import { Item } from "./Item/Item";
 import { setTask } from '../../redux/reducers/tasksReducer'
-export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today, width }) => {
+export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, theme, today, width }) => {
 
     const firstDay = new Date(selectYear, selectMonth, 0).getDay()
     const monthDaysCount = new Date(selectYear, selectMonth + 1, 0).getDate()
 
-    const theme = darkTheme ? "BodyDark" : "Body";
+    // const theme = darkTheme ? "BodyDark" : "Body";
 
     const [rendered, setRender] = React.useState(false)
 
@@ -120,9 +120,6 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
                             id={id}
                             key={id}
                             date={`${day}.0${selectMonth + 1}.${selectYear}`}
-                            // day={day}
-                            // month={selectMonth}
-                            // year={selectYear}
                             theme={theme}
                             width={width}
                         />

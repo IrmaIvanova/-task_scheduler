@@ -17,9 +17,9 @@ let yearOptions = createArrayYears(new Date().getFullYear())
 
 export const Header: React.FC<HeaderProps> = ({ month, year }) => {
 
-    const { darkTheme, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
+    const {darkTheme, theme, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
 
-    const theme = darkTheme ? "HeaderDark" : "Header";
+
 
     const monthChangeButton = (forward: boolean) => {
         if (forward) {

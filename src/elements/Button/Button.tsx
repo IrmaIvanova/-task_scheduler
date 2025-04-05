@@ -6,7 +6,7 @@ export const Button: React.FC<ButtonProps> = ({ children, onClick, darkTheme, ar
     let arrowElement = arrow || "withoutArrow"
     return <button
         onClick={onClick}
-        className={cnButton(`${darkTheme ? "NightBTN" : "DayBTN"} ${arrowElement}`)}>
+        className={cnButton(`${darkTheme} ${arrowElement}`)}>
         {children}
     </button>
 }

@@ -13,43 +13,43 @@ import { useResize } from '../../hooks/resizeHook/resizeHook'
 
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
-    const { darkTheme, toggleTheme, open, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
+    const { theme, toggleTheme, open, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
 
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
-
+    // "NightTheme" : "DayTheme"
     let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
 
     // ${darkTheme ? "NightTheme" : 
 
-    return <div className={cnLayoutBody(`${darkTheme ? "NightTheme" : "DayTheme"}`)}>
+    return <div className={cnLayoutBody(`${theme}`)}>
 
 
         <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
             <button
-                className={cnLayoutBody(`switch-btn ${darkTheme ? "LayoutBody__switch-on" : " "}`)}
+                className={cnLayoutBody(`switch-btn ${theme === "NightTheme" ? "LayoutBody__switch-on" : " "}`)}
                 onClick={() => toggleTheme()}
             >
 
             </button>
             <Header
-                darkTheme={darkTheme}
+                theme={theme}
                 month={monthArray[showDayPlan.getMonth()]}
                 year={showDayPlan.getFullYear()} />
 
             <Body
-                darkTheme={darkTheme}
+                theme={theme}
                 today={today.getDate()}
                 actualYear={actualYear}
                 actualMonth={actualMonth}
                 selectMonth={showDayPlan.getMonth()}
                 selectYear={showDayPlan.getFullYear()}
-                weekdays={weekdaysArray} 
-                width={width}/>
+                weekdays={weekdaysArray}
+                width={width} />
         </div>
 
         <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
     </div>
-   
+
 
 }

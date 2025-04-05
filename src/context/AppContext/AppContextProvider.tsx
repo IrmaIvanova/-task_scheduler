@@ -1,18 +1,18 @@
 import * as React from "react"
 
-export interface Planner {
-    id: string,
-    date: string,
-    tasks: Task[]
-}
+// export interface Planner {
+//     id: string,
+//     date: string,
+//     tasks: Task[]
+// }
 
-export interface Task {
-    title: string,
-    time?: string,
-    id: string,
-    checked: boolean,
-    plannerId: string
-}
+// export interface Task {
+//     title: string,
+//     time?: string,
+//     id: string,
+//     checked: boolean,
+//     plannerId: string
+// }
 const Context = React.createContext(null);
 
 
@@ -37,6 +37,8 @@ export const useCreateAppContext = function (props) {
         setDarkTheme(!darkTheme);
     }, [darkTheme]);
 
+    const theme = darkTheme ? "NightTheme" : "DayTheme";
+    
     const toggleOpen = React.useCallback((open) => {
         setOpen(open);
     }, []);
@@ -46,8 +48,9 @@ export const useCreateAppContext = function (props) {
 
     }, []);
 
+
     return {
-        darkTheme,
+        theme,
         showDayPlan,
         open,
         toggleShowDayPlan,

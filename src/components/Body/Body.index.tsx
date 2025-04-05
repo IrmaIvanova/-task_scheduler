@@ -9,6 +9,6 @@ export interface BodyProps {
     actualYear: number,
     actualMonth: number,
     today: number,
-    darkTheme:boolean,
+    theme:string,
 width:number,
 }

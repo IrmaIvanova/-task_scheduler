@@ -5,6 +5,6 @@ export const cnCalendarHeader = cn("CalendarHeader")
 export interface HeaderProps {
     month: string,
     year: number,
-    darkTheme:boolean,
+    theme:string,
 
 }

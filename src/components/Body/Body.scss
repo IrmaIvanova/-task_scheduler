@@ -1,5 +1,5 @@
 .CalendarBody {
-    &__BodyDarkBox {
+    &__NightThemeBox {
         padding: 20px;
         border-radius: 25px;
         color: #fff;
@@ -7,42 +7,42 @@
         ;
     }
 
-    &__BodyBox {
+    &__DayThemeBox {
         padding: 20px;
         border-radius: 25px;
         color: #000;
         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     }
 
-    &__BodyDarkBox:not(.CalendarBody__BodyDark-weekends, .CalendarBody__BodyDark-weekdays):hover {
+    &__NightThemeBox:not(.CalendarBody__NightTheme-weekends, .CalendarBody__NightTheme-weekdays):hover {
         background-color: rgb(61, 50, 165) !important;
         cursor: pointer
     }
 
-    &__BodyBox:not(.CalendarBody__Body-weekends, .CalendarBody__Body-weekdays):hover {
+    &__DayThemeBox:not(.CalendarBody__DayTheme-weekends, .CalendarBody__DayTheme-weekdays):hover {
         background-color: rgba(216, 243, 216, 0.438) !important;
         cursor: pointer
     }
 
-    &__BodyBox:not(.CalendarBody__Body-weekends, .CalendarBody__Body-weekdays):hover {
+    &__DayThemeBox:not(.CalendarBody__DayTheme-weekends, .CalendarBody__DayTheme-weekdays):hover {
         background-color: rgba(216, 243, 216, 0.438) !important;
         cursor: pointer
     }
 
-    &__BodyDark-OpenDay {
+    &__NightTheme-OpenDay {
         color: #fed50f;
         font-weight: 700;
         box-shadow: 0px 3px 3px -2px rgb(255 255 255 / 76%), 0px 3px 4px 0px rgb(255 255 255), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
     }
 
-    &__Body-OpenDay {
+    &__DayTheme-OpenDay {
         color: #0a0a07;
         font-weight: 700;
         box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 
     }
 
-    &__Body {
+    &__DayTheme {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 10px;
@@ -57,7 +57,7 @@
             background-color: rgb(175, 105, 255);
         }
 
-        &-days:not(.CalendarBody__Body-weekend, .CalendarBody__Body-today) {
+        &-days:not(.CalendarBody__DayTheme-weekend, .CalendarBody__DayTheme-today) {
             background-color: rgb(211, 245, 171);
         }
 
@@ -97,7 +97,7 @@
 
     }
 
-    &__BodyDark {
+    &__NightTheme {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 10px;
@@ -111,7 +111,7 @@
             background-color: rgb(101, 28, 116);
         }
 
-        &-days:not(.CalendarBody__BodyDark-weekend, .CalendarBody__BodyDark-today) {
+        &-days:not(.CalendarBody__NightTheme-weekend, .CalendarBody__NightTheme-today) {
             background-color: rgb(64, 134, 214);
         }
 
@@ -157,12 +157,12 @@
 
 @media only screen and (max-width: 992px) {
     .CalendarBody {
-        &__BodyDarkBox {
+        &__NightThemeBox {
             padding: 10px 5px;
 
         }
 
-        &__BodyBox {
+        &__DayThemeBox {
             padding: 10px 5px;
 
         }

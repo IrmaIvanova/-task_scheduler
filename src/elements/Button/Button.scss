@@ -1,5 +1,5 @@
 .Button {
-    &__DayBTN {
+    &__DayTheme {
 
         background: #ffd240;
         color: #fff;
@@ -36,7 +36,7 @@
 
 
 
-    &__NightBTN {
+    &__NightTheme {
         background: #893ed0;
         color: #fff;
         padding: 10px 20px;
@@ -75,7 +75,7 @@
 
 @media only screen and (max-width: 576px) {
     .Button {
-        &__DayBTN {
+        &__DayTheme {
             padding: 10px 10px;
 
             &.left::before {
@@ -87,7 +87,7 @@
 
 
 
-        &__NightBTN {
+        &__NightTheme {
             padding: 10px 10px;
 
 
