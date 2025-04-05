@@ -20,8 +20,7 @@ import { RootState } from '../../../redux/store'
 import {
     addItemToPlanner,
     Planner,
-    setPlanner,
-    setDayPlan
+    setPlanner
 } from '../../../redux/reducers/plannerReducer'
 import {
     setTask,
@@ -50,10 +49,6 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     const baseDayList = {
         id: selectedDay,
         date: selectedDay,
-        // day: showDayPlan.getDate(),
-        // month: showDayPlan.getMonth(),
-        // year: showDayPlan.getFullYear(),
-        // tasks: []
     }
 
     const baseTodoItem = {
@@ -65,8 +60,23 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     }
 
     const dayPlan = useSelector((state: RootState) => {
-        return state.planner.dayPlan
+        return state.planner.plannerCollection[selectedDay]
     }) || undefined;
+
+    React.useEffect(() => {
+
+        if (!dayPlan) {
+            createDay(baseDayList)
+            dispatch(addItemToPlanner({
+                id: baseDayList.date,
+                item: {
+                    ...baseDayList,
+                    tasks: []
+                }
+            }))
+        };
+
+    }, [dayPlan])
 
     const taskListIds = useSelector((state: RootState) => {
         return state.tasks.tasksIds
@@ -75,7 +85,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     const dispatch = useDispatch()
 
     // TODO fix  multiple rerender 
-    console.log("dayPlan", dayPlan)
+    // console.log("dayPlan", dayPlan)
 
     const createDay = (dayItem: any) => {
         fetch(`http://localhost:5000/api/task/planner`, {
@@ -88,42 +98,6 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
             .then((response) => response.json())
             .then((result) => { })
     }
-
-
-
-    const getDay = (id: string) => {
-        fetch(`http://localhost:5000/api/task/planner/${id}`, {
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((result) => {
-
-                if (!result) {
-                    createDay(baseDayList)
-                }
-
-                dispatch(setDayPlan({
-                    item: result || baseDayList
-                }))
-
-
-                let dayTasksCollection = result?.tasks?.reduce((acc, taskItem) => {
-                    return {
-                        ...acc, [taskItem.id]: {
-                            ...taskItem,
-                        }
-                    }
-                }, {}) || {};
-
-                let dayTasksCollectionIds = Object.keys(dayTasksCollection) || [];
-
-                dispatch(setTask({
-                    listIds: dayTasksCollectionIds,
-                    collectionList: dayTasksCollection
-                }))
-
-            });
-    };
 
 
 
@@ -141,14 +115,6 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                 console.log("res", result)
             });
     };
-
-
-    React.useEffect(() => {
-        // TODO fix rewriting tasks for a day if in day alrady was tasks
-        let selectedDay = `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`;
-        getDay(selectedDay)
-
-    }, [showDayPlan])
 
     const [shownInput, setShowInput] = React.useState(false)
 
@@ -173,14 +139,8 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
             id: dayPlan.date,
             item: {
                 ...dayPlan,
-                tasks: [...dayPlan.tasks, toDoItem]
-            }
-        }))
-
-        dispatch(setDayPlan({
-            item: {
-                ...dayPlan,
                 tasks: [...dayPlan.tasks, toDoItem],
+                taskIDS:[...dayPlan.taskIDS, toDoItem.id]
             }
         }))
 
@@ -210,13 +170,6 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
             }
         }))
 
-        dispatch(setDayPlan({
-            item: {
-                ...dayPlan,
-                tasks: filteredTodoList
-            }
-        }))
-
         dispatch(deleteTaskToRedux({ id }))
 
     };
@@ -225,7 +178,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         return <div className={cnDaySchedule(`${theme}-taskList`)}>
 
 
-            {taskListIds?.map((el) => {
+            {dayPlan.taskIDS?.map((el) => {
                 if (!el) {
                     return null;
                 }

@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setPlanner } from '../../redux/reducers/plannerReducer'
 import { RootState } from '../../redux/store'
 import { Item } from "./Item/Item";
-
+import { setTask } from '../../redux/reducers/tasksReducer'
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, darkTheme, today, width }) => {
 
     const firstDay = new Date(selectYear, selectMonth, 0).getDay()
@@ -30,21 +30,35 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
         })
             .then((response) => response.json())
             .then((result) => {
+                let taskArr = [];
                 let dayCollection = result.reduce((acc, dayItem) => {
                     let dayArr = dayItem.date.split('.');
+                    if (dayItem.tasks.length > 0) { taskArr.push(dayItem.tasks) }
                     return {
                         ...acc, [dayItem.date]: {
                             ...dayItem,
-                            day: +dayArr[0],
-                            month: +dayArr[1] - 1,
-                            year: +dayArr[2],
+                            taskIDS: dayItem?.tasks?.map((el) => { return el.id }) || [],
                         }
                     }
                 }, {});
 
                 let dayCollectionIds = Object.keys(dayCollection)
                 dispatch(setPlanner({ listIds: dayCollectionIds, collectionList: dayCollection }))
-             
+
+                let tasksCollection = taskArr.flat()?.reduce((acc, taskItem) => {
+                    return {
+                        ...acc, [taskItem.id]: {
+                            ...taskItem,
+                        }
+                    }
+                }, {}) || {};
+
+                dispatch(setTask({
+                    listIds: Object.keys(tasksCollection) || [],
+                    collectionList: tasksCollection
+                }))
+
+
             });
     };
 
@@ -105,13 +119,13 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
                         return <Item
                             id={id}
                             key={id}
-                            date={`${day}.0${selectMonth+1}.${selectYear}`}
+                            date={`${day}.0${selectMonth + 1}.${selectYear}`}
                             // day={day}
                             // month={selectMonth}
                             // year={selectYear}
                             theme={theme}
                             width={width}
-                             />
+                        />
                     })
                 }
 

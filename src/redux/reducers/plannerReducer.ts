@@ -4,10 +4,8 @@ import { Task } from './tasksReducer'
 export interface Planner {
     id: string,
     date: string,
-    day: number;
-    month: number;
-    year: number;
-    tasks: Task[]
+    tasks: Task[];
+    taskIDS:string[]
 }
 
 export interface DayPlan extends Planner {
@@ -17,14 +15,12 @@ export interface DayPlan extends Planner {
 interface PlannerState {
     plannerCollection: { [key: string]: Planner };
     plannerCollectionIds: string[];
-    dayPlan: DayPlan | undefined
+  
 }
 
 const initialState: PlannerState = {
     plannerCollection: {},
     plannerCollectionIds: [],
-    dayPlan: undefined
-
 }
 const plannerSlice = createSlice({
     name: 'planner',
@@ -44,17 +40,10 @@ const plannerSlice = createSlice({
             }
         },
 
-        setDayPlan: (state, action) => {
-            let { item } = action.payload;
-            let taskIDS = item?.tasks?.map((el) => { return el.id })||[];
-            state.dayPlan = item;
-            state.dayPlan.taskIDS = taskIDS;
-        }
-
     }
 })
 
 // Функция действия генерируется на каждую функцию релюсера(reducer), определённую в createSlice
-export const { setPlanner, addItemToPlanner, setDayPlan } = plannerSlice.actions
+export const { setPlanner, addItemToPlanner } = plannerSlice.actions
 
 export default plannerSlice.reducer;
