@@ -9,6 +9,9 @@ import { setPlanner } from '../../redux/reducers/plannerReducer'
 import { RootState } from '../../redux/store'
 import { Item } from "./Item/Item";
 import { setTask } from '../../redux/reducers/tasksReducer'
+
+
+
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, theme, today, width }) => {
 
     const firstDay = new Date(selectYear, selectMonth, 0).getDay()
@@ -31,7 +34,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
             .then((response) => response.json())
             .then((result) => {
                 let taskArr = [];
-                let dayCollection = result.reduce((acc, dayItem) => {
+                let dayCollection = result?.reduce((acc, dayItem) => {
                     let dayArr = dayItem.date.split('.');
                     if (dayItem.tasks.length > 0) { taskArr.push(dayItem.tasks) }
                     return {
@@ -40,9 +43,9 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
                             taskIDS: dayItem?.tasks?.map((el) => { return el.id }) || [],
                         }
                     }
-                }, {});
+                }, {})||{};
 
-                let dayCollectionIds = Object.keys(dayCollection)
+                let dayCollectionIds = Object.keys(dayCollection) || []
                 dispatch(setPlanner({ listIds: dayCollectionIds, collectionList: dayCollection }))
 
                 let tasksCollection = taskArr.flat()?.reduce((acc, taskItem) => {
