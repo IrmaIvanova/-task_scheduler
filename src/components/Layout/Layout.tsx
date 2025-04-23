@@ -10,7 +10,10 @@ import { useResize } from '../../hooks/resizeHook/resizeHook'
 import { LoginForm } from '../LoginForm/LoginForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
-
+import axios from 'axios';
+import { AuthResponse } from '../../models/response/AuthResponse';
+import { API_URL } from '../../http';
+import { setUser } from '../../redux/reducers/userReducer'
 
 
 export const Layout: React.FC<LayoutProps> = () => {
@@ -23,12 +26,34 @@ export const Layout: React.FC<LayoutProps> = () => {
     let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
 
     // ${darkTheme ? "NightTheme" : 
-    const isAuth = useSelector((state: RootState) => {
-        return state.user.isAuth
+    const user = useSelector((state: RootState) => {
+        return state.user
     });
+    const dispatch = useDispatch()
+
+    const chechAuth = async function () {
+        try {
+            const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
+            localStorage.setItem('token', response.data.accessToken)
+
+            dispatch(setUser({ data: response.data.user, isAuth: true }))
+        } catch (e) {
+            console.log("error chechAuth", e.response?.data)
+        }
+    }
+
+    React.useEffect(() => {
+        if (localStorage.getItem("token")) {
+            chechAuth()
+        }
+    }, [])
 
     return <div className={cnLayoutBody(`${theme}`)}>
-        {!isAuth ? <LoginForm /> :
+        {!user.isAuth ? <>
+            <h1>
+                {user.isAuth ? `Пользователь авторизован ${user.user.email}` : "Авторизуйтесь"}
+            </h1>
+            <LoginForm /> </> :
 
             <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
                 <button
@@ -51,7 +76,8 @@ export const Layout: React.FC<LayoutProps> = () => {
                     selectYear={showDayPlan.getFullYear()}
                     weekdays={weekdaysArray}
                     width={width} />
-            </div>}
+            </div>
+             } 
 
         <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
     </div>

@@ -7,6 +7,7 @@ import AuthService from '../../services/AuthService';
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../../redux/reducers/userReducer'
 
+
 export interface ILoginForm {
 
 }
@@ -23,17 +24,10 @@ export const LoginForm: React.FC<ILoginForm> = () => {
     } = useAppContext();
     const dispatch = useDispatch()
 
-//    const isAuth = useSelector((state: RootState) => {
-//         return state.user.isAuth
-//     }) ;
-
-
     const login = async function (email: string, password: string) {
-        try {
+        try {         
             const response = await AuthService.login(email, password);
-            console.log("response", response.data.user)
             localStorage.setItem('token', response.data.accessToken)
-            // dispatch(setAuth(true));
             dispatch(setUser({ data: response.data.user, isAuth: true }))
         } catch (e) {
             console.log(e.response?.data?.message)
