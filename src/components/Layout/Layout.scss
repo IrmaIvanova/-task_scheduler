@@ -1,3 +1,10 @@
+.LoginForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .LayoutBody {
 
 
@@ -6,6 +13,11 @@
         padding: 25px;
         display: flex;
         grid-gap: 25px;
+
+        &-actionBar {
+            display: flex;
+            align-items: center;
+        }
     }
 
     &__DayTheme {
@@ -13,6 +25,11 @@
         padding: 25px;
         display: flex;
         grid-gap: 25px;
+
+        &-actionBar {
+            display: flex;
+            align-items: center;
+        }
     }
 
     &__ButtonBox {

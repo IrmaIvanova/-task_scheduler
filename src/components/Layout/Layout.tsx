@@ -13,12 +13,15 @@ import { RootState } from '../../redux/store'
 import axios from 'axios';
 import { AuthResponse } from '../../models/response/AuthResponse';
 import { API_URL } from '../../http';
-import { setUser } from '../../redux/reducers/userReducer'
-
+import { setUser, setLoading } from '../../redux/reducers/userReducer'
+import CircularProgress from '@mui/material/CircularProgress';
+import LogoutIcon from '@mui/icons-material/Logout';
+import IconButton from '@mui/material/IconButton';
+import AuthService from '../../services/AuthService'
 
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
-    const { theme, toggleTheme, open, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
+    const { theme, toggleTheme, open, toggleOpen, darkTheme, showDayPlan, toggleShowDayPlan } = useAppContext();
 
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
@@ -32,52 +35,83 @@ export const Layout: React.FC<LayoutProps> = () => {
     const dispatch = useDispatch()
 
     const chechAuth = async function () {
+        dispatch(setLoading({ isLoading: true }))
         try {
+
             const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
             localStorage.setItem('token', response.data.accessToken)
 
             dispatch(setUser({ data: response.data.user, isAuth: true }))
         } catch (e) {
             console.log("error chechAuth", e.response?.data)
+        } finally {
+            dispatch(setLoading({ isLoading: false }))
         }
     }
 
+    const logout = async function () {
+        try {
+            const response = await AuthService.logout();
+            console.log("response", response)
+            localStorage.removeItem('token')
+            dispatch(setUser({ data: null, isAuth: false }))
+        } catch (e) {
+            console.log(e.response?.data?.message)
+        }
+    }
+
+
     React.useEffect(() => {
         if (localStorage.getItem("token")) {
+
             chechAuth()
         }
     }, [])
 
-    return <div className={cnLayoutBody(`${theme}`)}>
-        {!user.isAuth ? <>
-            <h1>
-                {user.isAuth ? `Пользователь авторизован ${user.user.email}` : "Авторизуйтесь"}
-            </h1>
-            <LoginForm /> </> :
+    if (user.isLoading) {
+        return <div className={cnLayoutBody(`${theme}`)}> <CircularProgress /></div>
+    }
+    if (!user.isAuth) {
+        return <div className={cnLayoutBody(`${theme} LoginForm`)}>
 
-            <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
+            <h1>
+                {"Авторизуйтесь"}
+            </h1>
+            <LoginForm />
+        </div>
+    }
+
+    return <div className={cnLayoutBody(`${theme}`)}>
+        <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
+            <div className={cnLayoutBody(`${theme}-actionBar`)}>
+                <h3 style={{ color: darkTheme ? "#fff" : "#000" }}>{`Привет, ${user.user?.name ? user.user?.name : user.user?.email}`}</h3>
+                <IconButton onClick={() => logout()}>
+                    <LogoutIcon sx={{ color: darkTheme ? "#fff" : "#000" }} />
+                </IconButton>
                 <button
                     className={cnLayoutBody(`switch-btn ${theme === "NightTheme" ? "LayoutBody__switch-on" : " "}`)}
                     onClick={() => toggleTheme()}
                 >
 
                 </button>
-                <Header
-                    theme={theme}
-                    month={monthArray[showDayPlan.getMonth()]}
-                    year={showDayPlan.getFullYear()} />
 
-                <Body
-                    theme={theme}
-                    today={today.getDate()}
-                    actualYear={actualYear}
-                    actualMonth={actualMonth}
-                    selectMonth={showDayPlan.getMonth()}
-                    selectYear={showDayPlan.getFullYear()}
-                    weekdays={weekdaysArray}
-                    width={width} />
             </div>
-             } 
+            <Header
+                theme={theme}
+                month={monthArray[showDayPlan.getMonth()]}
+                year={showDayPlan.getFullYear()} />
+
+            <Body
+                theme={theme}
+                today={today.getDate()}
+                actualYear={actualYear}
+                actualMonth={actualMonth}
+                selectMonth={showDayPlan.getMonth()}
+                selectYear={showDayPlan.getFullYear()}
+                weekdays={weekdaysArray}
+                width={width} />
+        </div>
+
 
         <div id="DayScheduleBox" style={{ width: !open ? "0" : open && (isScreenLg || isScreenXl || isScreenXxl) ? "40%" : "100% " }}></div>
     </div>

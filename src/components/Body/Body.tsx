@@ -67,7 +67,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
 
 
     React.useEffect(() => {
-        getPlanner()
+        // getPlanner()
     }, [])
 
     React.useEffect(() => {

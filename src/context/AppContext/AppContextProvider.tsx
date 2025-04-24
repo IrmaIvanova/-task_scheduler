@@ -51,6 +51,7 @@ export const useCreateAppContext = function (props) {
 
     return {
         theme,
+        darkTheme,
         showDayPlan,
         open,
         toggleShowDayPlan,
