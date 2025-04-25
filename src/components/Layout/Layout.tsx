@@ -52,7 +52,7 @@ export const Layout: React.FC<LayoutProps> = () => {
     const logout = async function () {
         try {
             const response = await AuthService.logout();
-            console.log("response", response)
+          
             localStorage.removeItem('token')
             dispatch(setUser({ data: null, isAuth: false }))
         } catch (e) {

@@ -12,7 +12,7 @@ import './DaySchedule.scss'
 import { Button } from '../../../elements/Button/Button'
 import TextField from '@mui/material/TextField';
 import { ToDoItem } from '../../../elements/ToDoItem/ToDoItem'
-import { DayScheduleHook } from './DayShedule.hook'
+import { useDayScheduleHook } from './DayShedule.hook'
 
 const DaySchedule: React.FC<DayScheduleProps> = () => {
  
@@ -34,7 +34,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         addTask,
         checkTask,
 
-    } = DayScheduleHook();
+    } = useDayScheduleHook();
 
     const memoToday = React.useMemo(() => {
         return <div className={cnDaySchedule(`${theme}-taskList`)}>

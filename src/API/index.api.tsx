@@ -1,7 +1,11 @@
 import { createDay } from './planner.api'
-import { saveTaskToServer } from './task.api'
+import { saveTaskToDB, deleteTaskFromDB, changeTaskInDB} from './task.api'
 
 export const APIList = {
     createDay,
-    saveTaskToServer
+
+    // task async functions
+    saveTaskToDB,
+    deleteTaskFromDB,
+    changeTaskInDB
 }

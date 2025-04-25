@@ -27,7 +27,7 @@ export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
         {item.title}
         <div className={cnToDoItem(`${theme}-taskList-item ControllButtons`)}>
             <IconButton
-                onClick={() => onCheckClick(id)}
+                onClick={() => onCheckClick(id, item)}
             >
                 {item.checked ? <CheckIcon /> : <RemoveDoneIcon />}
             </IconButton>

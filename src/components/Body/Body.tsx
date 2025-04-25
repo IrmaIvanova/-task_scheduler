@@ -9,7 +9,7 @@ import { setPlanner } from '../../redux/reducers/plannerReducer'
 import { RootState } from '../../redux/store'
 import { Item } from "./Item/Item";
 import { setTask } from '../../redux/reducers/tasksReducer'
-
+import PlannerService from '../../services/PlannerService';
 
 
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, theme, today, width }) => {
@@ -22,52 +22,47 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
     const [rendered, setRender] = React.useState(false)
 
     const planIDS = useSelector((state: RootState) => state.planner.plannerCollectionIds)
+    const userID = useSelector((state: RootState) => state.user.user.id)
     const dispatch = useDispatch()
 
 
+ const getPlanner = async function (userID: any) {
+    try {
+        const response = await PlannerService.getAllPlannerDays(userID);
+        let taskArr = [];
+        let dayCollection = response?.data?.reduce((acc, dayItem) => {
+            if (dayItem.tasks.length > 0) { taskArr.push(dayItem.tasks) }
+            return {
+                ...acc, [dayItem.date]: {
+                    ...dayItem,
+                    taskIDS: dayItem?.tasks?.map((el) => { return el.id }) || [],
+                }
+            }
+        }, {})||{};
 
+        let dayCollectionIds = Object.keys(dayCollection) || []
+        dispatch(setPlanner({ listIds: dayCollectionIds, collectionList: dayCollection }))
 
-    const getPlanner = () => {
-        fetch('http://localhost:5000/api/task/planner', {
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                let taskArr = [];
-                let dayCollection = result?.reduce((acc, dayItem) => {
-                    let dayArr = dayItem.date.split('.');
-                    if (dayItem.tasks.length > 0) { taskArr.push(dayItem.tasks) }
-                    return {
-                        ...acc, [dayItem.date]: {
-                            ...dayItem,
-                            taskIDS: dayItem?.tasks?.map((el) => { return el.id }) || [],
-                        }
-                    }
-                }, {})||{};
+        let tasksCollection = taskArr.flat()?.reduce((acc, taskItem) => {
+            return {
+                ...acc, [taskItem.id]: {
+                    ...taskItem,
+                }
+            }
+        }, {}) || {};
 
-                let dayCollectionIds = Object.keys(dayCollection) || []
-                dispatch(setPlanner({ listIds: dayCollectionIds, collectionList: dayCollection }))
+        dispatch(setTask({
+            listIds: Object.keys(tasksCollection) || [],
+            collectionList: tasksCollection
+        }))
 
-                let tasksCollection = taskArr.flat()?.reduce((acc, taskItem) => {
-                    return {
-                        ...acc, [taskItem.id]: {
-                            ...taskItem,
-                        }
-                    }
-                }, {}) || {};
-
-                dispatch(setTask({
-                    listIds: Object.keys(tasksCollection) || [],
-                    collectionList: tasksCollection
-                }))
-
-
-            });
-    };
-
+    } catch (e) {
+        console.log(e.response?.data?.message)
+    }
+}
 
     React.useEffect(() => {
-        // getPlanner()
+        getPlanner(userID)
     }, [])
 
     React.useEffect(() => {

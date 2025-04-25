@@ -13,9 +13,14 @@ import {
     deleteTask as deleteTaskToRedux,
 
 } from '../../../redux/reducers/tasksReducer'
-import { APIList } from '../../../API/index.api'
 
-export const DayScheduleHook = () => {
+
+
+
+import { APIList } from '../../../API/index.api'
+import { TaskResponse } from "../../../models/response/TaskResponse";
+
+export const useDayScheduleHook = () => {
 
     const {
         showDayPlan,
@@ -26,16 +31,20 @@ export const DayScheduleHook = () => {
         darkTheme
     } = useAppContext();
 
-    const { createDay, saveTaskToServer } = APIList;
+    const { createDay, saveTaskToDB, changeTaskInDB, deleteTaskFromDB } = APIList;
 
     let month = showDayPlan.getMonth() < 9 ? `0${showDayPlan.getMonth() + 1}` : `${showDayPlan.getMonth() + 1}`
 
 
     let selectedDay = `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`;
+    const userId = useSelector((state: RootState) => {
+        return state.user.user.id
+    }) || undefined;
 
     const baseDayList = {
         id: selectedDay,
         date: selectedDay,
+        userId
     }
 
     const baseTodoItem = {
@@ -55,12 +64,15 @@ export const DayScheduleHook = () => {
         return state.planner.plannerCollection[selectedDay]
     }) || undefined;
 
+
+
+
     const dispatch = useDispatch()
 
     React.useEffect(() => {
 
         if (!dayPlan) {
-            createDay(baseDayList)
+            createDay(baseDayList.date, baseDayList)
             dispatch(addItemToPlanner({
                 id: baseDayList.date,
                 item: {
@@ -73,7 +85,7 @@ export const DayScheduleHook = () => {
 
     }, [dayPlan])
 
- 
+
 
     // TODO fix  multiple rerender 
     // console.log("dayPlan", dayPlan)
@@ -90,7 +102,7 @@ export const DayScheduleHook = () => {
     const saveTask = () => {
         setShowInput(false)
 
-        saveTaskToServer(toDoItem)
+        saveTaskToDB(toDoItem)
 
 
         dispatch(addItemToPlanner({
@@ -112,14 +124,23 @@ export const DayScheduleHook = () => {
         setToDoItem(baseTodoItem)
     }
 
-    const checkTask = (id: string) => {
+
+
+    const checkTask = (id: string, task: TaskResponse) => {
+
+
         dispatch(checkTaskToRedux({ id }))
+
+        changeTaskInDB(id, { ...task, checked: !task.checked })
+
     };
 
     const deleteTask = (id: string) => {
 
         const filteredTodoListIDS = dayPlan.taskIDS.filter((todoItemID) => todoItemID !== id);
         const filteredTodoList = dayPlan.tasks.filter((todoItem) => todoItem.id !== id);
+
+        deleteTaskFromDB(id)
 
         dispatch(addItemToPlanner({
             id: dayPlan.date,
