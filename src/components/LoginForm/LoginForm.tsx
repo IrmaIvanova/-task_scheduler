@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '../../elements/Button/Button'
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 // import { login, registration } from '../../redux/reducers/userReducer'
-import AuthService from '../../services/AuthService';
+import AuthService from '../../RestAPI/services/AuthService';
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../../redux/reducers/userReducer'
 import Tabs from '@mui/material/Tabs';

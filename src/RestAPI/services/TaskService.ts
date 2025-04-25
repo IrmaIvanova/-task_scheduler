@@ -1,6 +1,6 @@
 import $api from "../http";
 import { AxiosResponse } from "axios";
-import { TaskResponse } from "../models/response/TaskResponse";
+import { TaskResponse } from "../../RestAPI/models/response/TaskResponse";
 
 
 

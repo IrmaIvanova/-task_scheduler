@@ -17,8 +17,8 @@ import {
 
 
 
-import { APIList } from '../../../API/index.api'
-import { TaskResponse } from "../../../models/response/TaskResponse";
+import { APIList } from '../../../RestAPI/requests/index.api'
+import { TaskResponse } from "../../../RestAPI/models/response/TaskResponse";
 
 export const useDayScheduleHook = () => {
 

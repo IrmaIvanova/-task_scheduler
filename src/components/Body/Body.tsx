@@ -9,7 +9,7 @@ import { setPlanner } from '../../redux/reducers/plannerReducer'
 import { RootState } from '../../redux/store'
 import { Item } from "./Item/Item";
 import { setTask } from '../../redux/reducers/tasksReducer'
-import PlannerService from '../../services/PlannerService';
+import PlannerService from '../../RestAPI/services/PlannerService';
 
 
 export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, actualYear, actualMonth, theme, today, width }) => {

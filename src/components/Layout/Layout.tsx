@@ -11,13 +11,13 @@ import { LoginForm } from '../LoginForm/LoginForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
 import axios from 'axios';
-import { AuthResponse } from '../../models/response/AuthResponse';
-import { API_URL } from '../../http';
+import { AuthResponse } from '../../RestAPI/models/response/AuthResponse';
+import { API_URL } from '../../RestAPI/http';
 import { setUser, setLoading } from '../../redux/reducers/userReducer'
 import CircularProgress from '@mui/material/CircularProgress';
 import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
-import AuthService from '../../services/AuthService'
+import AuthService from '../../RestAPI/services/AuthService'
 
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { IUser } from '../../models/IUser'
-import AuthService from '../../services/AuthService'
+import { IUser } from '../../RestAPI/models/IUser'
+import AuthService from '../../RestAPI/services/AuthService'
 
 interface UserState {
     isAuth: boolean,
