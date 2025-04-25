@@ -5,7 +5,7 @@ import { cnCalendarBody } from '../Body.index'
 import '../Body.scss'
 interface ICalendarItem {
     id: string,
-    date:string,
+    date: string,
     // day: number,
     // month: number,
     // year: number,
@@ -24,11 +24,18 @@ export const Item: React.FC<ICalendarItem> = ({
 
     const dayItem = useSelector((state: RootState) => state.planner.plannerCollection[id]);
 
-// console.log("dayItem", dayItem, date) 
+    // console.log("dayItem", dayItem, date) 
 
     if (dayItem.date === date) {
-    // if (dayItem.day === day && dayItem.month === month && dayItem.year === year) {
-        if (width < 500) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> {dayItem?.tasks?.length} </div>;
+        // if (dayItem.day === day && dayItem.month === month && dayItem.year === year) {
+        if (width < 500 && dayItem?.tasks?.length > 0) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> <div className={cnCalendarBody(`${theme}-taskListSMobile-absolute`)}>  {
+            dayItem.tasks.map((el) => {
+                return <span
+                    className={cnCalendarBody(`${theme}-taskListSMobile-absolute-item`)}>
+                </span>
+            })
+        } </div>
+        </div>;
         return <div className={cnCalendarBody(`${theme}-taskList`)}>
             {
                 dayItem.tasks.map((el) => {
