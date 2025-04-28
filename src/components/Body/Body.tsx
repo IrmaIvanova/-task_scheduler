@@ -97,6 +97,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
             const checkToday = day === today && selectYear === actualYear && selectMonth === actualMonth
             const checkOpenDay = showDayPlan.getDate() === day && selectYear === showDayPlan.getFullYear() && selectMonth === showDayPlan.getMonth()
 
+
             return <div
                 onClick={() => {
                     toggleShowDayPlan(new Date(selectYear, selectMonth, i - firstDay + 1));

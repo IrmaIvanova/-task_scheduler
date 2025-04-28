@@ -1,15 +1,14 @@
 import * as React from 'react'
-import TextField from '@mui/material/TextField';
+
 import { Button } from '../../elements/Button/Button'
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 // import { login, registration } from '../../redux/reducers/userReducer'
 import AuthService from '../../RestAPI/services/AuthService';
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../../redux/reducers/userReducer'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { TabsComponent } from '../../elements/Tabs/Tabs';
 import Alert from '@mui/material/Alert';
+import { TextField } from '../../elements/TextField/TextField'
 export interface ILoginForm {
 
 }
@@ -58,6 +57,7 @@ export const LoginForm: React.FC<ILoginForm> = () => {
     return <>
 
         <TabsComponent
+        theme={theme}
             value={value}
             setValue={setValue}
             options={[
@@ -68,20 +68,29 @@ export const LoginForm: React.FC<ILoginForm> = () => {
         </Alert>}
 
         {value === 1 && <TextField
+            variant='outlined'
+            theme={theme}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder='Имя' />}
+            label='Имя'
+             />}
+
         <TextField
+            variant='outlined'
             required
             value={email}
             error={error["email"]?.error}
             helperText={error["email"]?.message}
+            theme={theme}
             onChange={(e) => {
                 setEmail(e.target.value)
                 setError({})
             }}
             label='Почта' />
+
         <TextField
+            variant='outlined'
+            theme={theme}
             required
             error={error["password"]?.error}
             helperText={error["password"]?.message}

@@ -57,6 +57,7 @@ export const useDayScheduleHook = () => {
 
 
     const [shownInput, setShowInput] = React.useState(false)
+    const [error, setError] = React.useState({})
 
     const [toDoItem, setToDoItem] = React.useState<Task>(baseTodoItem)
 
@@ -100,6 +101,17 @@ export const useDayScheduleHook = () => {
     }
 
     const saveTask = () => {
+
+        if(toDoItem.title.length === 0){
+            return  setError({
+                "title": {
+                    error: toDoItem.title.length === 0,
+                    message: toDoItem.title.length === 0 ? "Поле обязательно для заполнения" : ""
+                },
+               
+            })
+
+        }
         setShowInput(false)
 
         saveTaskToDB(toDoItem)
@@ -166,6 +178,7 @@ export const useDayScheduleHook = () => {
         dayPlan,
         shownInput,
         toDoItem,
+        error,
         setToDoItem,
         setShowInput,
         addTask,

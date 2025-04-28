@@ -10,12 +10,13 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './DaySchedule.scss'
 import { Button } from '../../../elements/Button/Button'
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
+import { TextField } from '../../../elements/TextField/TextField'
 import { ToDoItem } from '../../../elements/ToDoItem/ToDoItem'
 import { useDayScheduleHook } from './DayShedule.hook'
 
 const DaySchedule: React.FC<DayScheduleProps> = () => {
- 
+
     const {
         showDayPlan,
         open,
@@ -27,6 +28,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
         toggleShowDayPlan,
         toggleOpen,
+        error,
         setToDoItem,
         setShowInput,
         deleteTask,
@@ -93,21 +95,28 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                 {memoToday}
 
                 {shownInput && <TextField
+                theme={theme}
+                    variant="outlined"
+                    // placeholder="Добавьте название"
+                    label="Добавьте название"
+                    className={`${theme}`}
+                    error={error['title']?.error}
+                    helperText={error['title']?.message}
                     onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
+                <div className={cnDaySchedule(`${theme}-Actions`)}>
+                    <Button darkTheme={theme}
+                        onClick={() => shownInput ? saveTask() : addTask()}
+                        children={shownInput ? "Сохранить" : "Добавить"} />
 
-                <Button darkTheme={theme}
-                    onClick={() => shownInput ? saveTask() : addTask()}
-                    children={shownInput ? "Сохранить" : "Добавить"} />
-
-                {shownInput && <Button darkTheme={theme}
-                    onClick={() => {
-                        setToDoItem({ ...toDoItem, title: "", })
-                        setShowInput(false)
-                    }}
-                    children={"Отмена"} />
-                }
-
+                    {shownInput && <Button darkTheme={theme}
+                        onClick={() => {
+                            setToDoItem({ ...toDoItem, title: "", })
+                            setShowInput(false)
+                        }}
+                        children={"Отмена"} />
+                    }
+                </div>
 
 
             </div>}

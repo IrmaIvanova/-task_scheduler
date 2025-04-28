@@ -7,8 +7,8 @@ interface ITabsCmponent {
         label: string,
     }[]
     value: number
-    setValue: (value:number)=> void
-    
+    setValue: (value: number) => void
+    theme: string
 }
 
 function a11yProps(index: number) {
@@ -18,17 +18,32 @@ function a11yProps(index: number) {
     };
 }
 
-export const TabsComponent: React.FC<ITabsCmponent> = ({ options, value, setValue }) => {
-
+export const TabsComponent: React.FC<ITabsCmponent> = ({ options, value, setValue, theme }) => {
 
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-    return <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+
+    const color = theme === "DayTheme" ? '#e1ad03' : '#893ed0'
+    return <Tabs
+        sx={{
+            '& .Mui-selected': {
+                color: color,
+
+            },
+            '& .MuiTabs-indicator': {
+               " backgroundColor": color,
+
+            },
+
+        }}
+        value={value}
+        onChange={handleChange}
+        aria-label="basic tabs example">
         {options.map((option, index) => <Tab label={option.label} {...a11yProps(index)} />)}
 
 
-      
+
     </Tabs>
 }
