@@ -7,8 +7,12 @@ import { StyledMenu, StyledMenuButton, StyledMenuItem } from './Dropdown.styled'
 export const DropDown: React.FC<{
     options: string[] | number[],
     defText: string | number,
+    color: string,
     handleChange: (elem) => void
-}> = React.memo(function DropDown({ options, defText,
+}> = React.memo(function DropDown({
+    options,
+    defText,
+    color,
     handleChange
 }) {
 
@@ -27,9 +31,16 @@ export const DropDown: React.FC<{
         setDefaultText(defText)
     }, [defText])
 
+
     return (
         <div>
             <StyledMenuButton
+
+                sx={{
+                    "&.MuiButtonBase-root": {
+                        color: color
+                    }
+                }}
                 variant="text"
                 disableElevation
                 onClick={handleClick}
@@ -56,7 +67,7 @@ export const DropDown: React.FC<{
                 {options.map((elem) => {
                     if (elem === "-") return <Divider />
                     return <StyledMenuItem
-                      
+
                         onClick={() => {
                             handleChange(elem)
                             handleClose()

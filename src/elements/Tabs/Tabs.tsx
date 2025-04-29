@@ -25,15 +25,12 @@ export const TabsComponent: React.FC<ITabsCmponent> = ({ options, value, setValu
         setValue(newValue);
     };
 
-    const color = theme === "DayTheme" ? '#e1ad03' : '#893ed0'
+    const color = theme === "DayTheme" ? '#e1ad03' : '#893ed0';
+
     return <Tabs
         sx={{
-            '& .Mui-selected': {
-                color: color,
-
-            },
             '& .MuiTabs-indicator': {
-               " backgroundColor": color,
+                " backgroundColor": color,
 
             },
 
@@ -41,7 +38,17 @@ export const TabsComponent: React.FC<ITabsCmponent> = ({ options, value, setValu
         value={value}
         onChange={handleChange}
         aria-label="basic tabs example">
-        {options.map((option, index) => <Tab label={option.label} {...a11yProps(index)} />)}
+        {options.map((option, index) => <Tab sx={{
+            "&.MuiTab-root": {
+                color: theme === "DayTheme" ? "#000" : "#ffffffa3"
+            },
+            '&.Mui-selected': {
+                color: color,
+
+            },
+
+
+        }} label={option.label} {...a11yProps(index)} />)}
 
 
 

@@ -17,7 +17,7 @@ let yearOptions = createArrayYears(new Date().getFullYear())
 
 export const Header: React.FC<HeaderProps> = ({ month, year }) => {
 
-    const {darkTheme, theme, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
+    const { theme, toggleOpen, showDayPlan, toggleShowDayPlan } = useAppContext();
 
 
 
@@ -45,27 +45,29 @@ export const Header: React.FC<HeaderProps> = ({ month, year }) => {
 
     }
 
-
+    const themeColor = theme === "DayTheme" ? "#000" : "#ffffffa3"
 
     return <div className={cnCalendarHeader(`${theme}`)}>
-        <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
+        <IconButton sx={{ color: themeColor }}
             onClick={() => monthChangeButton(false)}>
             <KeyboardArrowLeftIcon />
         </IconButton>
 
         <div className={cnCalendarHeader(`DateShow`)}>
             <DropDown
+                color={themeColor}
                 options={[monthArray[today.getMonth()], "-", ...monthArray]}
                 defText={monthArray[showDayPlan.getMonth()]}
                 handleChange={handleMonthChange}
             />
             <DropDown
+                color={themeColor}
                 options={[today.getFullYear(), "-", ...yearOptions]}
                 defText={showDayPlan.getFullYear()}
                 handleChange={handleYearChange} />
         </div>
 
-        <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
+        <IconButton sx={{ color: themeColor}}
             onClick={() => monthChangeButton(true)}
         >
             <KeyboardArrowRightIcon />

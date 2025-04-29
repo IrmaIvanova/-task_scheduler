@@ -10,7 +10,7 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 export const StyledMenuButton = styled(Button)(({ theme }) => ({
     textTransform: "capitalize",
     fontSize: "2em",
-    color: "#000"
+    // color: "#000"
 }));
 
 export const StyledMenu = styled(Menu)(({ theme }) => ({

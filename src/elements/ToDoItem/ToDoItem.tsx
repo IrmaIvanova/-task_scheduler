@@ -7,7 +7,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
-
+import LoopIcon from '@mui/icons-material/Loop';
 
 export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
     id,
@@ -22,14 +22,14 @@ export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
 
     if (!item) return;
 
-    return <div className={cnToDoItem(`${theme}-taskList-item`)}>
+    return <div className={cnToDoItem(`${theme}-taskList-item ${item.checked ? "Done" : "Process"}`)}>
         {/* {el.time}: */}
         {item.title}
         <div className={cnToDoItem(`${theme}-taskList-item ControllButtons`)}>
             <IconButton
                 onClick={() => onCheckClick(id, item)}
             >
-                {item.checked ? <CheckIcon /> : <RemoveDoneIcon />}
+                {item.checked ?  <LoopIcon /> : <CheckIcon /> }
             </IconButton>
             <IconButton
                 onClick={() => onDelClick(id)}>

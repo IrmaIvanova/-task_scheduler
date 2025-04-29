@@ -52,7 +52,7 @@ export const Layout: React.FC<LayoutProps> = () => {
     const logout = async function () {
         try {
             const response = await AuthService.logout();
-          
+
             localStorage.removeItem('token')
             dispatch(setUser({ data: null, isAuth: false }))
         } catch (e) {
@@ -68,26 +68,33 @@ export const Layout: React.FC<LayoutProps> = () => {
         }
     }, [])
 
+    const themeColor = theme === "DayTheme" ? "#000" : "#ffffffa3"
+
     if (user.isLoading) {
         return <div className={cnLayoutBody(`${theme}`)}> <CircularProgress /></div>
     }
     if (!user.isAuth) {
         return <div className={cnLayoutBody(`${theme} LoginForm`)}>
 
-            <h1>
+            <h1 style={{ color: themeColor }}>
                 {"Авторизуйтесь"}
             </h1>
             <LoginForm />
         </div>
     }
 
-    return <div className={cnLayoutBody(`${theme}`)}>
+    return <div className={cnLayoutBody(`${theme}`)} style={{ height: open ? "100%" : "100vh" }}>
         <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
             <div className={cnLayoutBody(`${theme}-actionBar`)}>
-                <h3 style={{ color: darkTheme ? "#fff" : "#000" }}>{`Привет, ${user.user?.name ? user.user?.name : user.user?.email}`}</h3>
+
+                <h3 style={{ color: themeColor }}>
+                    {`Привет, ${user.user?.name ? user.user?.name : user.user?.email}`}
+                </h3>
+
                 <IconButton onClick={() => logout()}>
-                    <LogoutIcon sx={{ color: darkTheme ? "#fff" : "#000" }} />
+                    <LogoutIcon sx={{ color: themeColor }} />
                 </IconButton>
+
                 <button
                     className={cnLayoutBody(`switch-btn ${theme === "NightTheme" ? "LayoutBody__switch-on" : " "}`)}
                     onClick={() => toggleTheme()}
