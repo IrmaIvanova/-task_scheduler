@@ -6,9 +6,6 @@ import '../Body.scss'
 interface ICalendarItem {
     id: string,
     date: string,
-    // day: number,
-    // month: number,
-    // year: number,
     theme: string,
     width: number
 }
@@ -16,18 +13,13 @@ interface ICalendarItem {
 export const Item: React.FC<ICalendarItem> = ({
     id,
     date,
-    // day,
-    // month,
-    // year,
     theme,
-    width }) => {
+    width
+}) => {
 
     const dayItem = useSelector((state: RootState) => state.planner.plannerCollection[id]);
 
-    // console.log("dayItem", dayItem, date) 
-
     if (dayItem.date === date) {
-        // if (dayItem.day === day && dayItem.month === month && dayItem.year === year) {
         if (width < 500 && dayItem?.tasks?.length > 0) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> <div className={cnCalendarBody(`${theme}-taskListSMobile-absolute`)}>  {
             dayItem.tasks.map((el) => {
                 return <span

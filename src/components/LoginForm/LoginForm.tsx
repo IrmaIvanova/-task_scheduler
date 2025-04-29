@@ -23,12 +23,13 @@ export const LoginForm: React.FC<ILoginForm> = () => {
     const [name, setName] = React.useState<string>('')
     // {fieldName: "password", error: false}, {fieldName: "email", error: false}
     const [error, setError] = React.useState({})
-    const [showVarning, setShowVarning] = React.useState({ show: false, message: "" })
+    const [showVarning, setShowWarning] = React.useState({ show: false, message: "" })
 
 
     const {
         theme,
     } = useAppContext();
+    
     const dispatch = useDispatch()
 
     const login = async function (email: string, password: string) {
@@ -37,7 +38,7 @@ export const LoginForm: React.FC<ILoginForm> = () => {
             localStorage.setItem('token', response.data.accessToken)
             dispatch(setUser({ data: response.data.user, isAuth: true }))
         } catch (e) {
-            setShowVarning({ show: true, message: e.response?.data?.message })
+            setShowWarning({ show: true, message: e.response?.data?.message })
             console.log(e.response?.data?.message)
         }
     }
@@ -49,7 +50,7 @@ export const LoginForm: React.FC<ILoginForm> = () => {
             localStorage.setItem('token', response.data.accessToken)
             dispatch(setUser({ data: response.data.user, isAuth: true }))
         } catch (e) {
-            setShowVarning({ show: true, message: e.response?.data?.message })
+            setShowWarning({ show: true, message: e.response?.data?.message })
             console.log(e.response?.data?.message)
         }
     }

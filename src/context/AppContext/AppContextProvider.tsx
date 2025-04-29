@@ -29,16 +29,19 @@ export const useAppContext = () => {
 
 
 export const useCreateAppContext = function (props) {
-    const [darkTheme, setDarkTheme] = React.useState(false)
+    const [darkTheme, setDarkTheme] = React.useState(localStorage.getItem("darkTheme") === "true" || false)
     const [showDayPlan, setShowDayPlan] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
 
+
     const toggleTheme = React.useCallback(() => {
         setDarkTheme(!darkTheme);
+        localStorage.setItem('darkTheme', `${!darkTheme}`)
+ 
     }, [darkTheme]);
 
     const theme = darkTheme ? "NightTheme" : "DayTheme";
-    
+
     const toggleOpen = React.useCallback((open) => {
         setOpen(open);
     }, []);
