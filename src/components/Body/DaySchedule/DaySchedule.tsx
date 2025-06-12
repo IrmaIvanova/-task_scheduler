@@ -35,7 +35,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         saveTask,
         addTask,
         checkTask,
-
+handleTitleChange
     } = useDayScheduleHook();
 
     const memoToday = React.useMemo(() => {
@@ -102,7 +102,8 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                     className={`${theme}`}
                     error={error['title']?.error}
                     helperText={error['title']?.message}
-                    onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
+                    onChange={handleTitleChange}
+                    // onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
                 <div className={cnDaySchedule(`${theme}-Actions`)}>
                     <Button darkTheme={theme}

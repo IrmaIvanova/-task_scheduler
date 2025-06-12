@@ -1,27 +1,22 @@
 import * as React from "react"
 import { useAppContext } from '../../../context/AppContext/AppContextProvider'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../../redux/store'
-import {
-    addItemToPlanner,
-} from '../../../redux/reducers/plannerReducer'
-import {
-    Task,
-    addTask as addTastToRedux,
-    checkTask as checkTaskToRedux,
-    deleteTask as deleteTaskToRedux,
-
-} from '../../../redux/reducers/tasksReducer'
-
-
-
-
+import { addItemToPlanner } from '../../../redux/reducers/plannerReducer'
+import { Task, addTask as addTastToRedux, checkTask as checkTaskToRedux, deleteTask as deleteTaskToRedux } from '../../../redux/reducers/tasksReducer'
 import { APIList } from '../../../RestAPI/requests/index.api'
-import { TaskResponse } from "../../../RestAPI/models/response/TaskResponse";
+import { TaskResponse } from "../../../RestAPI/models/response/TaskResponse"
+import debounce from 'lodash.debounce'
+
+interface ErrorState {
+    title?: {
+        error: boolean
+        message: string
+    }
+}
 
 export const useDayScheduleHook = () => {
-
     const {
         showDayPlan,
         toggleShowDayPlan,
@@ -29,49 +24,44 @@ export const useDayScheduleHook = () => {
         open,
         theme,
         darkTheme
-    } = useAppContext();
+    } = useAppContext()
 
-    const { createDay, saveTaskToDB, changeTaskInDB, deleteTaskFromDB } = APIList;
+    const { createDay, saveTaskToDB, changeTaskInDB, deleteTaskFromDB } = APIList
 
-    let month = showDayPlan.getMonth() < 9 ? `0${showDayPlan.getMonth() + 1}` : `${showDayPlan.getMonth() + 1}`
+    const selectedDay = React.useMemo(() => {
+        const month = showDayPlan.getMonth() < 9 
+            ? `0${showDayPlan.getMonth() + 1}` 
+            : `${showDayPlan.getMonth() + 1}`
+        return `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`
+    }, [showDayPlan])
 
+    const userId = useSelector((state: RootState) => state.user.user.id) || undefined
 
-    let selectedDay = `${showDayPlan.getDate()}.${month}.${showDayPlan.getFullYear()}`;
-    const userId = useSelector((state: RootState) => {
-        return state.user.user.id
-    }) || undefined;
-
-    const baseDayList = {
+    const baseDayList = React.useMemo(() => ({
         id: selectedDay,
         date: selectedDay,
         userId
-    }
+    }), [selectedDay, userId])
 
-    const baseTodoItem = {
+    const baseTodoItem = React.useMemo(() => ({
         title: "",
         id: "",
         date: selectedDay,
         checked: false,
         plannerId: selectedDay,
-    }
-
+    }), [selectedDay])
 
     const [shownInput, setShowInput] = React.useState(false)
-    const [error, setError] = React.useState({})
-
+    const [error, setError] = React.useState<ErrorState>({})
     const [toDoItem, setToDoItem] = React.useState<Task>(baseTodoItem)
 
-    const dayPlan = useSelector((state: RootState) => {
-        return state.planner.plannerCollection[selectedDay]
-    }) || undefined;
-
-
-
+    const dayPlan = useSelector((state: RootState) => 
+        state.planner.plannerCollection[selectedDay]
+    ) || undefined
 
     const dispatch = useDispatch()
 
     React.useEffect(() => {
-
         if (!dayPlan) {
             createDay(baseDayList.date, baseDayList)
             dispatch(addItemToPlanner({
@@ -82,75 +72,94 @@ export const useDayScheduleHook = () => {
                     taskIDS: [],
                 }
             }))
-        };
+        }
+    }, [dayPlan, baseDayList, createDay, dispatch])
 
-    }, [dayPlan])
+    // Debounced title update
+    const debouncedUpdateTitle = React.useMemo(
+        () => debounce((title: string) => {
+            setToDoItem(prev => ({ ...prev, title }))
+        }, 1000),
+        []
+    )
 
+    // Cleanup debounce on unmount
+    React.useEffect(() => {
+        return () => {
+            debouncedUpdateTitle.cancel()
+        }
+    }, [debouncedUpdateTitle])
 
-
-    // TODO fix  multiple rerender 
-    // console.log("dayPlan", dayPlan)
-
-
-
-    const addTask = () => {
-        setShowInput(true)
-
-        setToDoItem({ ...toDoItem, plannerId: dayPlan.id, date: dayPlan.id, id: uuidv4() })
-
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        // Clear error if user starts typing
+        if (error.title?.error && value.trim()) {
+            setError(prev => ({ ...prev, title: undefined }))
+        }
+        debouncedUpdateTitle(value)
     }
 
-    const saveTask = () => {
 
-        if(toDoItem.title.length === 0){
-            return  setError({
-                "title": {
-                    error: toDoItem.title.length === 0,
-                    message: toDoItem.title.length === 0 ? "Поле обязательно для заполнения" : ""
-                },
-               
+    
+
+    // TODO fix  multiple rerender 
+    console.log("dayPlan", dayPlan)
+
+    const addTask = React.useCallback(() => {
+        setShowInput(true)
+        setToDoItem(prev => ({
+            ...prev,
+            plannerId: dayPlan?.id || selectedDay,
+            date: dayPlan?.id || selectedDay,
+            id: uuidv4()
+        }))
+    }, [dayPlan, selectedDay])
+
+    const saveTask = React.useCallback(() => {
+        if (!toDoItem.title.trim()) {
+            return setError({
+                title: {
+                    error: true,
+                    message: "Поле обязательно для заполнения"
+                }
             })
-
         }
+
         setShowInput(false)
+        
+        if (!dayPlan) return
 
-        saveTaskToDB(toDoItem)
-
+        const taskToSave = { ...toDoItem }
+        saveTaskToDB(taskToSave)
 
         dispatch(addItemToPlanner({
             id: dayPlan.date,
             item: {
                 ...dayPlan,
-                tasks: [...dayPlan.tasks, toDoItem],
-                taskIDS: [...dayPlan.taskIDS, toDoItem.id]
+                tasks: [...dayPlan.tasks, taskToSave],
+                taskIDS: [...dayPlan.taskIDS, taskToSave.id]
             }
         }))
 
-
         dispatch(addTastToRedux({
-            id: toDoItem.id,
-            item: toDoItem
+            id: taskToSave.id,
+            item: taskToSave
         }))
 
-
         setToDoItem(baseTodoItem)
-    }
+        setError({})
+    }, [toDoItem, dayPlan, saveTaskToDB, dispatch, baseTodoItem])
 
-
-
-    const checkTask = (id: string, task: TaskResponse) => {
-
-
+    const checkTask = React.useCallback((id: string, task: TaskResponse) => {
         dispatch(checkTaskToRedux({ id }))
-
         changeTaskInDB(id, { ...task, checked: !task.checked })
+    }, [dispatch, changeTaskInDB])
 
-    };
+    const deleteTask = React.useCallback((id: string) => {
+        if (!dayPlan) return
 
-    const deleteTask = (id: string) => {
-
-        const filteredTodoListIDS = dayPlan.taskIDS.filter((todoItemID) => todoItemID !== id);
-        const filteredTodoList = dayPlan.tasks.filter((todoItem) => todoItem.id !== id);
+        const filteredTodoListIDS = dayPlan.taskIDS.filter(todoItemID => todoItemID !== id)
+        const filteredTodoList = dayPlan.tasks.filter(todoItem => todoItem.id !== id)
 
         deleteTaskFromDB(id)
 
@@ -164,9 +173,7 @@ export const useDayScheduleHook = () => {
         }))
 
         dispatch(deleteTaskToRedux({ id }))
-
-    };
-
+    }, [dayPlan, deleteTaskFromDB, dispatch])
 
     return {
         showDayPlan,
@@ -181,6 +188,7 @@ export const useDayScheduleHook = () => {
         error,
         setToDoItem,
         setShowInput,
+        handleTitleChange, // Добавлен новый обработчик
         addTask,
         saveTask,
         checkTask,

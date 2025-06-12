@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Header } from '../Header/Header'
 import { weekdaysArray, monthArray } from '../../constants'
-import { Body } from '../Body/Body'
+// import { Body } from '../Body/Body'
+import { Body } from '../Body/BodyOptimized'
 import { LayoutProps, cnLayoutBody } from './Layout.index'
 import "./Layout.scss"
 import { Button } from '../../elements/Button/Button'
