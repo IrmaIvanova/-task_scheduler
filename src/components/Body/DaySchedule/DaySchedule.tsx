@@ -35,7 +35,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
         saveTask,
         addTask,
         checkTask,
-handleTitleChange
+        handleTitleChange
     } = useDayScheduleHook();
 
     const memoToday = React.useMemo(() => {
@@ -61,7 +61,6 @@ handleTitleChange
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
             {open && <div className={cnDaySchedule(`${theme}`)}>
-
 
                 <div className={cnDaySchedule(`${theme}-Header`)}>
                     <div className={cnDaySchedule(`${theme}-Header-Navigation`)}>
@@ -95,7 +94,7 @@ handleTitleChange
                 {memoToday}
 
                 {shownInput && <TextField
-                theme={theme}
+                    theme={theme}
                     variant="outlined"
                     // placeholder="Добавьте название"
                     label="Добавьте название"
@@ -103,7 +102,7 @@ handleTitleChange
                     error={error['title']?.error}
                     helperText={error['title']?.message}
                     onChange={handleTitleChange}
-                    // onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
+                // onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
                 <div className={cnDaySchedule(`${theme}-Actions`)}>
                     <Button darkTheme={theme}

@@ -99,12 +99,6 @@ export const useDayScheduleHook = () => {
         debouncedUpdateTitle(value)
     }
 
-
-    
-
-    // TODO fix  multiple rerender 
-    console.log("dayPlan", dayPlan)
-
     const addTask = React.useCallback(() => {
         setShowInput(true)
         setToDoItem(prev => ({
