@@ -38,7 +38,8 @@ export const DayCell = React.memo(({
   width,
   onClick
 }: DayCellProps) => {
-    console.log("отрисовка ячейки")
+
+    
   return (
     <div
       onClick={onClick}
