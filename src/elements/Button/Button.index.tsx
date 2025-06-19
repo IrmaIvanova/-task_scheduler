@@ -1,4 +1,5 @@
-import { createCn as cn } from "bem-react-classname"
+import cn from 'classnames';
+
 import * as React from "react"
 
 export const cnButton = cn("Button")

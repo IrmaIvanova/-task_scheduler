@@ -1,4 +1,4 @@
-import {createCn as cn} from "bem-react-classname"
+import cn from 'classnames';
 
 export const cnDaySchedule = cn("DaySchedule")
 

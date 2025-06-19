@@ -1,5 +1,5 @@
 import * as React from "react"
-import { DayScheduleProps, cnDaySchedule } from './DaySchedule.index'
+import { DayScheduleProps } from './DaySchedule.index'
 import { TransitionGroup } from '../../../elements/Transitions/Transitions'
 import { weekdaysArrayAmerican } from '../../../constants'
 import Slide from '@mui/material/Slide';
@@ -14,6 +14,10 @@ import { Button } from '../../../elements/Button/Button'
 import { TextField } from '../../../elements/TextField/TextField'
 import { ToDoItem } from '../../../elements/ToDoItem/ToDoItem'
 import { useDayScheduleHook } from './DayShedule.hook'
+import { createBem } from '../../../elements/HelperBemClassName/HelperBemClassName'
+
+
+const { bemElClassName } = createBem('DaySchedule');
 
 const DaySchedule: React.FC<DayScheduleProps> = () => {
 
@@ -39,7 +43,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
     } = useDayScheduleHook();
 
     const memoToday = React.useMemo(() => {
-        return <div className={cnDaySchedule(`${theme}-taskList`)}>
+        return <div className={bemElClassName(`${theme}-taskList`)}>
             {dayPlan?.taskIDS?.map((el) => {
                 if (!el) {
                     return null;
@@ -60,10 +64,10 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>
-            {open && <div className={cnDaySchedule(`${theme}`)}>
+            {open && <div className={bemElClassName(`${theme}`)}>
 
-                <div className={cnDaySchedule(`${theme}-Header`)}>
-                    <div className={cnDaySchedule(`${theme}-Header-Navigation`)}>
+                <div className={bemElClassName(`${theme}-Header`)}>
+                    <div className={bemElClassName(`${theme}-Header-Navigation`)}>
                         <IconButton sx={{ color: darkTheme ? "#fff" : "#000" }}
                             onClick={() => {
                                 toggleShowDayPlan(new Date(showDayPlan.getFullYear(), showDayPlan.getMonth(), showDayPlan.getDate() - 1));
@@ -104,7 +108,7 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                     onChange={handleTitleChange}
                 // onChange={(e) => setToDoItem({ ...toDoItem, title: e.target.value, })}
                 />}
-                <div className={cnDaySchedule(`${theme}-Actions`)}>
+                <div className={bemElClassName(`${theme}-Actions`)}>
                     <Button darkTheme={theme}
                         onClick={() => shownInput ? saveTask() : addTask()}
                         children={shownInput ? "Сохранить" : "Добавить"} />

@@ -1,5 +1,6 @@
-import { createCn as cn } from "bem-react-classname"
+import cn from 'classnames';
 import { TaskResponse as Task } from '../../RestAPI/models/response/TaskResponse'
+
 export const cnToDoItem = cn("ToDoItem")
 
 export interface IToDoItem {
