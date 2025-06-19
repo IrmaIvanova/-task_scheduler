@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-export const API_URL =`http://localhost:5000/api`
+export const API_URL =`backend-one-beta-73.vercel.app`
+// export const API_URL =`https://backend-git-dev-irmas-projects-89b5f685.vercel.app/api`
 
 
 const $api = axios.create({
