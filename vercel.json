@@ -6,31 +6,12 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build",
-        "installCommand": "npm install --force --legacy-peer-deps",
-        "buildCommand": "npm run build",
-        "outputDirectory": "build"
+        "installCommand": "npm install --legacy-peer-deps",
+        "buildCommand": "npm run build"
       }
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "src/api/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-        "Access-Control-Allow-Credentials": "true"
-      }
-    },
-    {
-      "src": "/static/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "continue": true
-    },
     {
       "src": "/(.*)",
       "dest": "/index.html",
@@ -38,14 +19,7 @@
     }
   ],
   "env": {
-    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-    "CI": "true"
-  },
-  "build": {
-    "env": {
-      "NODE_VERSION": "18.x",
-      "NPM_CONFIG_FORCE": "true",
-      "GENERATE_SOURCEMAP": "false"
-    }
+    "NODE_VERSION": "18.x",
+    "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
   }
 }
