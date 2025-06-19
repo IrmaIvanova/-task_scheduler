@@ -8,15 +8,15 @@ export interface Task {
     checked: boolean,
     plannerId: string
 }
-interface TasksState {
-    tasksCollection: { [key: string]: Task };
-    tasksIds: string[]
-}
+// interface TasksState {
+//     tasksCollection: { [key: string]: Task };
+//     tasksIds: string[]
+// }
 
-const initialState: TasksState = {
-    tasksCollection: {},
-    tasksIds: []
-}
+// const initialState: TasksState = {
+//     tasksCollection: {},
+//     tasksIds: []
+// }
 
 const tasksSlice = createSlice({
     name: 'tasks',

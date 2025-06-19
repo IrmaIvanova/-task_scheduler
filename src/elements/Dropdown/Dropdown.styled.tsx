@@ -1,5 +1,5 @@
 import { styled, alpha } from '@mui/material/styles';
-import Menu, { MenuProps } from '@mui/material/Menu';
+import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 

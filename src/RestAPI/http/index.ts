@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 export const API_URL =`https://backend-one-beta-73.vercel.app/api`
 // export const API_URL =`https://backend-git-dev-irmas-projects-89b5f685.vercel.app/api`

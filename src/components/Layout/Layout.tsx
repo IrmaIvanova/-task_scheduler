@@ -3,9 +3,8 @@ import { Header } from '../Header/Header'
 import { weekdaysArray, monthArray } from '../../constants'
 import { Body } from '../Body/Body'
 // import { Body } from '../Body/BodyOptimized'
-import { LayoutProps, cnLayoutBody } from './Layout.index'
+import { LayoutProps, } from './Layout.index'
 import "./Layout.scss"
-import { Button } from '../../elements/Button/Button'
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 import { useResize } from '../../hooks/resizeHook/resizeHook'
 import { LoginForm } from '../LoginForm/LoginForm'
@@ -25,12 +24,12 @@ import { createBem } from '../../elements/HelperBemClassName/HelperBemClassName'
 const { bemElClassName } = createBem('LayoutBody');
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
-    const { theme, toggleTheme, open, toggleOpen, darkTheme, showDayPlan, toggleShowDayPlan } = useAppContext();
+    const { theme, toggleTheme, open, showDayPlan } = useAppContext();
 
     const actualYear = today.getFullYear()
     let actualMonth = today.getMonth();
     // "NightTheme" : "DayTheme"
-    let { isScreenLg, isScreenMd, isScreenSm, isScreenXl, isScreenXxl, width } = useResize()
+    let { isScreenLg, isScreenXl, isScreenXxl, width } = useResize()
 
     // ${darkTheme ? "NightTheme" : 
     const user = useSelector((state: RootState) => {
@@ -38,24 +37,24 @@ export const Layout: React.FC<LayoutProps> = () => {
     });
     const dispatch = useDispatch()
 
-    const chechAuth = async function () {
-        dispatch(setLoading({ isLoading: true }))
-        try {
+    // const chechAuth = async function () {
+    //     dispatch(setLoading({ isLoading: true }))
+    //     try {
 
-            const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
-            localStorage.setItem('token', response.data.accessToken)
+    //         const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
+    //         localStorage.setItem('token', response.data.accessToken)
 
-            dispatch(setUser({ data: response.data.user, isAuth: true }))
-        } catch (e) {
-            console.log("error chechAuth", e.response?.data)
-        } finally {
-            dispatch(setLoading({ isLoading: false }))
-        }
-    }
+    //         dispatch(setUser({ data: response.data.user, isAuth: true }))
+    //     } catch (e) {
+    //         console.log("error chechAuth", e.response?.data)
+    //     } finally {
+    //         dispatch(setLoading({ isLoading: false }))
+    //     }
+    // }
 
     const logout = async function () {
         try {
-            const response = await AuthService.logout();
+            await AuthService.logout();
 
             localStorage.removeItem('token')
             dispatch(setUser({ data: null, isAuth: false }))
@@ -66,11 +65,25 @@ export const Layout: React.FC<LayoutProps> = () => {
 
 
     React.useEffect(() => {
+        const chechAuth = async function () {
+            dispatch(setLoading({ isLoading: true }))
+            try {
+
+                const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
+                localStorage.setItem('token', response.data.accessToken)
+
+                dispatch(setUser({ data: response.data.user, isAuth: true }))
+            } catch (e) {
+                console.log("error chechAuth", e.response?.data)
+            } finally {
+                dispatch(setLoading({ isLoading: false }))
+            }
+        }
         if (localStorage.getItem("token")) {
 
             chechAuth()
         }
-    }, [])
+    }, [dispatch])
 
     const themeColor = theme === "DayTheme" ? "#000" : "#ffffffa3"
 

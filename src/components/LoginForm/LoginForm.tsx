@@ -4,7 +4,7 @@ import { Button } from '../../elements/Button/Button'
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 // import { login, registration } from '../../redux/reducers/userReducer'
 import AuthService from '../../RestAPI/services/AuthService';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setUser } from '../../redux/reducers/userReducer'
 import { TabsComponent } from '../../elements/Tabs/Tabs';
 import Alert from '@mui/material/Alert';

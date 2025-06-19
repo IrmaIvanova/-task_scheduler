@@ -48,19 +48,19 @@ const DaySchedule: React.FC<DayScheduleProps> = () => {
                 if (!el) {
                     return null;
                 }
-                if (el) {
-                    return <ToDoItem
-                        key={el}
-                        id={el}
-                        theme={theme}
-                        onCheckClick={checkTask}
-                        onDelClick={deleteTask}
-                    />
-                }
+
+                return <ToDoItem
+                    key={el}
+                    id={el}
+                    theme={theme}
+                    onCheckClick={checkTask}
+                    onDelClick={deleteTask}
+                />
+
             }
             )}
         </div>
-    }, [showDayPlan, theme, dayPlan])
+    }, [theme, dayPlan, checkTask, deleteTask])
 
     return <TransitionGroup>
         <Slide direction="left" in={open} mountOnEnter unmountOnExit>

@@ -1,19 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { IUser } from '../../RestAPI/models/IUser'
-import AuthService from '../../RestAPI/services/AuthService'
+import {  createSlice } from '@reduxjs/toolkit'
+// import { IUser } from '../../RestAPI/models/IUser'
 
-interface UserState {
-    isAuth: boolean,
-    user: IUser | null,
-    isLoading: boolean
-}
+// interface UserState {
+//     isAuth: boolean,
+//     user: IUser | null,
+//     isLoading: boolean
+// }
 
-const initialState: UserState = {
-    isAuth: false,
-    user: null,
-    isLoading: false
+// const initialState: UserState = {
+//     isAuth: false,
+//     user: null,
+//     isLoading: false
 
-}
+// }
 
 const userSlice = createSlice({
     name: 'user',

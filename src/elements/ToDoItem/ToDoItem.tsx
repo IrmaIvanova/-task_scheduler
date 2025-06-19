@@ -1,11 +1,11 @@
 import * as React from "react"
-import { IToDoItem,  IToDoItemOwnProps } from './ToDoItem.index'
+import { IToDoItemOwnProps } from './ToDoItem.index'
 import "./ToDoItem.scss"
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
-import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
-import { useSelector, useDispatch } from 'react-redux'
+
+import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import LoopIcon from '@mui/icons-material/Loop';
 import { createBem } from '../../elements/HelperBemClassName/HelperBemClassName'

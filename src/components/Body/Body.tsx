@@ -42,7 +42,7 @@ export const Body: React.FC<BodyProps> = ({ weekdays, selectMonth, selectYear, a
             <DaySchedule />,
             root!
         );
-    }, [rendered, showDayPlan]);
+    }, [rendered]);
 
     return <div className={cnCalendarBody(`${theme}`)}>
         {weekdays.map((el: string, index: number) => <div className={cnCalendarBody(`${index > 4 ? `${theme}-weekends` : `${theme}-weekdays`} CalendarBody__${theme}Box`,)}>{el}</div>)}
