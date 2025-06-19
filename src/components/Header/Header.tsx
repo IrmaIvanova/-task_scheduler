@@ -1,8 +1,5 @@
 import * as React from "react"
-import {
-    HeaderProps,
-    cnCalendarHeader
-} from "./Header.index"
+import { HeaderProps } from "./Header.index"
 import "./Header.scss"
 import { useAppContext } from '../../context/AppContext/AppContextProvider'
 import IconButton from '@mui/material/IconButton';
@@ -10,7 +7,10 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { DropDown } from '../../elements/Dropdown/Dropdown'
 import { monthArray, createArrayYears } from '../../constants'
+import { createBem } from '../../elements/HelperBemClassName/HelperBemClassName'
 
+
+const { bemElClassName } = createBem('CalendarHeader');
 let today = new Date()
 let yearOptions = createArrayYears(new Date().getFullYear())
 
@@ -47,13 +47,13 @@ export const Header: React.FC<HeaderProps> = ({ month, year }) => {
 
     const themeColor = theme === "DayTheme" ? "#000" : "#ffffffa3"
 
-    return <div className={cnCalendarHeader(`${theme}`)}>
+    return <div className={bemElClassName(`${theme}`)}>
         <IconButton sx={{ color: themeColor }}
             onClick={() => monthChangeButton(false)}>
             <KeyboardArrowLeftIcon />
         </IconButton>
 
-        <div className={cnCalendarHeader(`DateShow`)}>
+        <div className={bemElClassName(`DateShow`)}>
             <DropDown
                 color={themeColor}
                 options={[monthArray[today.getMonth()], "-", ...monthArray]}
@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({ month, year }) => {
                 handleChange={handleYearChange} />
         </div>
 
-        <IconButton sx={{ color: themeColor}}
+        <IconButton sx={{ color: themeColor }}
             onClick={() => monthChangeButton(true)}
         >
             <KeyboardArrowRightIcon />

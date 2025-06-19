@@ -1,9 +1,11 @@
 import * as React from "react"
-import { cnCalendarBody } from "../Body.index"
 import {DayCellProps} from './DayCell.index'
 import { Item } from "../Item/Item";
 import { useGetPlannerHook } from '../Body.hook'
+import { createBem } from '../../../elements/HelperBemClassName/HelperBemClassName'
 
+
+const { bemElClassName } = createBem('CalendarBody');
 // 1. Мемоизируем компонент Item
 const MemoizedItem = React.memo(Item, (prev, next) => {
     return prev.id === next.id &&
@@ -30,7 +32,7 @@ export const DayCell = React.memo(({
     return (
         <div
             onClick={onClick}
-            className={cnCalendarBody(
+            className={bemElClassName(
                 !isOutOfMonth
                     ? `${theme}Box 
            ${className}-days

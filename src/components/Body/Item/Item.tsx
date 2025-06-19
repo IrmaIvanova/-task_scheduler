@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../../redux/store'
-import { cnCalendarBody } from '../Body.index'
+
 import '../Body.scss'
+
+import { createBem } from '../../../elements/HelperBemClassName/HelperBemClassName'
+
+
+const { bemElClassName:element } = createBem('CalendarBody');
 interface ICalendarItem {
     id: string,
     date: string,
@@ -20,20 +25,20 @@ export const Item: React.FC<ICalendarItem> = ({
     const dayItem = useSelector((state: RootState) => state.planner.plannerCollection[id]);
 
     if (dayItem.date === date) {
-        if (width < 500 && dayItem?.tasks?.length > 0) return <div className={cnCalendarBody(`${theme}-taskListSMobile`)}> <div className={cnCalendarBody(`${theme}-taskListSMobile-absolute`)}>  {
+        if (width < 500 && dayItem?.tasks?.length > 0) return <div className={element(`${theme}-taskListSMobile`)}> <div className={element(`${theme}-taskListSMobile-absolute`)}>  {
             dayItem.tasks.map((el) => {
                 return <span
-                    className={cnCalendarBody(`${theme}-taskListSMobile-absolute-item`)}>
+                    className={element(`${theme}-taskListSMobile-absolute-item`)}>
                 </span>
             })
         } </div>
         </div>;
-        return <div className={cnCalendarBody(`${theme}-taskList`)}>
+        return <div className={element(`${theme}-taskList`)}>
            
             {
                 dayItem.tasks.map((el) => {
                     return <div
-                        className={cnCalendarBody(`${theme}-taskList-item`)}>
+                        className={element(`${theme}-taskList-item`)}>
                     </div>
                 })
             }

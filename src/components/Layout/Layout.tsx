@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Header } from '../Header/Header'
 import { weekdaysArray, monthArray } from '../../constants'
-// import { Body } from '../Body/Body'
-import { Body } from '../Body/BodyOptimized'
+import { Body } from '../Body/Body'
+// import { Body } from '../Body/BodyOptimized'
 import { LayoutProps, cnLayoutBody } from './Layout.index'
 import "./Layout.scss"
 import { Button } from '../../elements/Button/Button'
@@ -19,7 +19,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import AuthService from '../../RestAPI/services/AuthService'
+import { createBem } from '../../elements/HelperBemClassName/HelperBemClassName'
 
+
+const { bemElClassName } = createBem('LayoutBody');
 export const Layout: React.FC<LayoutProps> = () => {
     let today = new Date();
     const { theme, toggleTheme, open, toggleOpen, darkTheme, showDayPlan, toggleShowDayPlan } = useAppContext();
@@ -72,10 +75,10 @@ export const Layout: React.FC<LayoutProps> = () => {
     const themeColor = theme === "DayTheme" ? "#000" : "#ffffffa3"
 
     if (user.isLoading) {
-        return <div className={cnLayoutBody(`${theme}`)}> <CircularProgress /></div>
+        return <div className={bemElClassName(`${theme}`)}> <CircularProgress /></div>
     }
     if (!user.isAuth) {
-        return <div className={cnLayoutBody(`${theme} LoginForm`)}>
+        return <div className={bemElClassName(`${theme} LoginForm`)}>
 
             <h1 style={{ color: themeColor }}>
                 {"Авторизуйтесь"}
@@ -84,9 +87,9 @@ export const Layout: React.FC<LayoutProps> = () => {
         </div>
     }
 
-    return <div className={cnLayoutBody(`${theme}`)} style={{ height: open ? "100%" : "100vh" }}>
+    return <div className={bemElClassName(`${theme}`)} style={{ height: open ? "100%" : "100vh" }}>
         <div style={{ width: open && (isScreenLg || isScreenXl || isScreenXxl) ? "60%" : "100%" }}>
-            <div className={cnLayoutBody(`${theme}-actionBar`)}>
+            <div className={bemElClassName(`${theme}-actionBar`)}>
 
                 <h3 style={{ color: themeColor }}>
                     {`Привет, ${user.user?.name ? user.user?.name : user.user?.email}`}
@@ -97,7 +100,7 @@ export const Layout: React.FC<LayoutProps> = () => {
                 </IconButton>
 
                 <button
-                    className={cnLayoutBody(`switch-btn ${theme === "NightTheme" ? "LayoutBody__switch-on" : " "}`)}
+                    className={bemElClassName(`switch-btn ${theme === "NightTheme" ? "LayoutBody__switch-on" : " "}`)}
                     onClick={() => toggleTheme()}
                 >
 

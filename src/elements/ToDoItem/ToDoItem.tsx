@@ -1,5 +1,5 @@
 import * as React from "react"
-import { IToDoItem, cnToDoItem, IToDoItemOwnProps } from './ToDoItem.index'
+import { IToDoItem,  IToDoItemOwnProps } from './ToDoItem.index'
 import "./ToDoItem.scss"
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,7 +8,10 @@ import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
 import LoopIcon from '@mui/icons-material/Loop';
+import { createBem } from '../../elements/HelperBemClassName/HelperBemClassName'
 
+
+const { bemElClassName } = createBem('ToDoItem');
 export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
     id,
     theme,
@@ -22,10 +25,10 @@ export const ToDoItem: React.FC<IToDoItemOwnProps> = ({
 
     if (!item) return;
 
-    return <div className={cnToDoItem(`${theme}-taskList-item ${item.checked ? "Done" : "Process"}`)}>
+    return <div className={bemElClassName(`${theme}-taskList-item ${item.checked ? "Done" : "Process"}`)}>
         {/* {el.time}: */}
         {item.title}
-        <div className={cnToDoItem(`${theme}-taskList-item ControllButtons`)}>
+        <div className={bemElClassName(`${theme}-taskList-item ControllButtons`)}>
             <IconButton
                 onClick={() => onCheckClick(id, item)}
             >
